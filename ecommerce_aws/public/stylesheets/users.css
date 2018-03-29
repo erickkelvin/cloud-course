@@ -1,0 +1,12 @@
+.row {
+  margin: 2%;
+  padding: 2%;
+  width: 92%;
+
+  border: 1px solid;
+  border-color: gray;
+}
+
+.row img {
+  height: 90px;
+}
