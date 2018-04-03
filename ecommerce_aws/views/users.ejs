@@ -1,0 +1,16 @@
+<link rel='stylesheet' href='/stylesheets/users.css' />
+
+<div class="jumbotron text-center">
+  <h1>Usuarios</h1>
+  <% users.forEach(function(user) { %>
+    <div class="row" style="border: 1px solid; border-color: gray">
+      <div>
+        <img src="<%= user.photo_url %>">
+
+        <h2><%= user.name %></h2>
+        <p>Login: <%= user.login %></p>
+        <p>Aniversário: <%= user.birthday %></p>
+      </div>
+    </div>
+  <% }); %>
+</div>

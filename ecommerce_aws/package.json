@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "NODE_ENV=development node ./bin/www",
+    "start-prod": "NODE_ENV=production node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -12,6 +13,9 @@
     "ejs": "~2.5.7",
     "express": "~4.15.5",
     "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.4",
+    "aws-sdk": "^2.212.1"
   }
 }
