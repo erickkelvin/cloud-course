@@ -1,0 +1,34 @@
+<% include ../header %>
+  <div class='content' id='users-index'>
+    <h1>
+      <%= title %>
+      <div class='new-crud-button'><i class='fa fa-search'></i> Buscar</div>
+      <div class='new-crud-button'><i class='fa fa-user-plus'></i> Adicionar novo</div>
+    </h1>
+    <table>
+      <tr>
+        <th class='user-info'>Informações dos usuários</th>
+        <th class='user-actions'>Ações</th>
+      </tr>
+      <% users.forEach(function(user){ %>
+        <tr class="user-row">
+          <td class='user-info'>
+            <img class='user-photo' src="<%= user.photo_url %>"/>
+            <div class='user-name'>
+              <span><%= user.name %></span>
+              <span><%= user.login %></span>
+            </div>
+            <div class="user-email">E-mail: <%= user.email %></div>
+            <div class="user-birthdate">Data de nascimento: <%= user.birthdate %></div>
+            <div class="user-phone">Telefone: <%= user.phone %></div>
+          </td>
+          <td class='user-actions'>
+            <span><i class='fa fa-edit'></i> Editar</span>
+            <span><i class='fa fa-trash'></i> Remover</span>
+          </td>
+          
+        </tr>
+      <% }) %>
+    </table>
+  </div>
+<% include ../footer %>

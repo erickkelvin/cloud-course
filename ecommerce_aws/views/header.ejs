@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+    <% if (title !== 'SmartVendas') { %> | SmartVendas <% } %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' />
+</head>
+
+<body>
+  <div id='header'>
+    <div id='logo'>
+      <i class="fa fa-shopping-bag"></i>
+      <span>SmartVendas</span>
+    </div>
+    <div id='user'>
+      <% if (false) { %>
+        <div class='user-logged-in'>
+          <img class='user-picture' src='https://erickkelvin.github.io/img/erick_profile.jpg' />
+          <div class='user-name'>Erick Kelvin</div>
+        </div>
+      <% } else { %>
+        <div class='user-menu'>
+          <a href='/register'>Cadastro</a>
+        </div>
+        <div class='user-menu'>
+          <a href='/login'>Login</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  <div id='main-menu'>
+    <div>
+      Início
+    </div>
+    <div>
+      Produtos
+    </div>
+    <div>
+      Sei lá
+    </div>
+  </div>

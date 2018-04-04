@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   
   listAll((result) => {
     console.log(result);
-    res.render('users', { users: result });
+    res.render('./users/index', { title:'Usuários', users: result });
   }, (err) => {
     console.log('error on listAll');
     console.error(err);

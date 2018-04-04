@@ -1,8 +1,184 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
-a {
-  color: #00B7FF;
+#header {
+  background-color: #db7d25;
+  padding: 15px 10vw;
+  box-shadow: 0px 0px 8px 0px #888;
+  color: #fff;
+}
+
+#logo {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#user {
+  display: inline-block;
+  position: absolute;
+  right: 10vw;
+}
+
+#user .user-menu {
+  display: inline-block;
+  padding: 4px 12px;
+}
+
+#user .user-logged-in {
+  display: inline-block;
+}
+
+#user .user-picture {
+  width: 30px;
+  height: 30px;
+  margin-top: -2px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 1px #fff;
+}
+
+#user .user-name {
+  float: right;
+  margin: 5px;
+}
+
+#user a {
+  text-decoration: none;
+  color: #fff;
+}
+
+#user a:hover {
+  text-decoration: underline;
+}
+
+#main-menu {
+  box-shadow: 0px 0px 3px 0px #888;
+  background-color: #f1eeeb;
+  color: #db7d25;
+  padding: 7px 10vw;
+  display: flex;
+}
+
+#main-menu div {
+  margin-right: 30px;
+}
+
+#login {
+  text-align: center;
+  padding: 50px;
+  margin: auto;
+}
+
+#login label {
+  display: block;
+  margin: 25px 5px;
+}
+
+#login input[type='text'], #login input[type='password'] {
+  -webkit-appearance: none;
+  padding: 8px;
+  padding-left: 25px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  width: 250px;
+  margin-left: 40px;
+}
+
+#login input[type='submit'] {
+  -webkit-appearance: none;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #db7d25;
+  border: 1px solid #e06704;
+  color: #fff;
+  cursor: pointer;
+}
+
+#login .fa {
+  position: relative;
+  right: 290px;
+  color: #888;
+  padding: 10px;
+}
+
+#login .fa-key {
+  padding:0px 8px;
+}
+
+.content {
+  padding: 5px 10vw;
+}
+
+/* USERS */
+#users-index table {
+  width: 100%;
+}
+
+#users-index th {
+  background-color: #db7d25;
+  color: #fff;
+  padding: 7px 10px;
+  border-radius: 4px;
+  text-align: left;
+}
+
+#users-index td {
+  background-color: #f1eeeb;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 13px;
+}
+
+td.user-info {
+  width: 85%;
+}
+
+td.user-actions {
+  width: 15%;
+}
+
+.user-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  float:left;
+  margin-right: 15px;
+}
+
+.user-name {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.user-name span:first-child {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.user-name span:last-child {
+  margin-left:5px;
+  color: #979797;
+}
+
+.user-actions {
+  text-align: center;
+}
+
+.user-actions span {
+  margin: 2px;
+}
+
+.new-crud-button {
+  margin-left: 4px;
+  font-size: 12px;
+  float: right;
+  border: 1px solid #db7d25;
+  color: #db7d25;
+  border-radius: 4px;
+  padding: 3px 6px;
+  line-height: 22px;
+
 }
