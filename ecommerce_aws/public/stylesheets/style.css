@@ -66,13 +66,13 @@ body {
   margin-right: 30px;
 }
 
-#login {
+div#login {
   text-align: center;
   padding: 50px;
   margin: auto;
 }
 
-#login label {
+div#login label {
   display: block;
   margin: 25px 5px;
 }
@@ -163,22 +163,118 @@ td.user-actions {
   color: #979797;
 }
 
-.user-actions {
+.user-action {
   text-align: center;
+  min-width: 55px;
 }
 
-.user-actions span {
-  margin: 2px;
+.user-action a {
+  text-decoration: none;
+  color: #000;
+  transition: .2s ease;
+}
+
+.user-action a:hover {
+  color: #db7d25;
+}
+
+.user-action .fa {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .new-crud-button {
-  margin-left: 4px;
+  margin: 2px;
   font-size: 12px;
   float: right;
   border: 1px solid #db7d25;
   color: #db7d25;
   border-radius: 4px;
-  padding: 3px 6px;
+  padding: 3px 10px;
   line-height: 22px;
+  cursor: pointer;
+  transition: .3s ease;
+  text-decoration: none;
+  text-align: center;
+}
 
+.search-crud-input {
+  float: right;
+  
+}
+
+.search-crud-input input {
+  margin-left: 5px;
+  float: right;
+  -webkit-appearance: none;
+  padding: 4px 4px 3px 28px;
+  border-radius: 4px;
+  border: 1px solid #db7d25;
+  width: 136px;
+  height: 30px;
+  color: #db7d25;
+  transition: .3s ease;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top:2px;
+  outline: none;
+}
+
+.search-crud-input input.active {
+  cursor: text;
+  width: 180px;
+  font-weight: normal;
+}
+
+.search-crud-input .fa {
+  position: absolute;
+  margin-left:15px;
+  margin-top: 11px;
+  color: #888;
+  font-size: 13px;
+  font-weight: bold;
+  color: #db7d25;
+}
+
+.search-crud-input input::placeholder {
+  color: #db7d25;
+  opacity: 1;
+  font-weight: bold;
+  transition: .3s ease;
+}
+
+.search-crud-input input.active::placeholder {
+  opacity: 0;
+}
+
+.content h1 {
+  margin-top: 25px;
+  margin-bottom: 35px;
+}
+
+#users-form label {
+  display: block;
+  width: 250px;
+  margin: 20px 0px;
+}
+
+#users-form input:not([type='submit']) {
+  -webkit-appearance: none;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  display:block;
+  width: 100%;
+  margin-top: 4px;
+}
+
+#users-form input[type='submit'] {
+  -webkit-appearance: none;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #db7d25;
+  border: 1px solid #e06704;
+  color: #fff;
+  cursor: pointer;
 }

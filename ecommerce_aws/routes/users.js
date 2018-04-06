@@ -6,7 +6,6 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  
   listAll((result) => {
     console.log(result);
     res.render('./users/index', { title:'Usuários', users: result });
@@ -14,8 +13,54 @@ router.get('/', function(req, res, next) {
     console.log('error on listAll');
     console.error(err);
   });
-
 });
+
+/* GET new user page. */
+router.get('/new', function(req, res, next) {
+  res.render('./users/form', { title:'Adicionar novo usuário', action: 'create', user: {} });
+});
+
+/* POST create user */
+router.post('/create', function(req, res, next) {
+  create(req.body, (result) => {
+    res.redirect('/users');
+  }, (err) => {
+    console.log('error on create');
+    console.error(err);
+  });
+});
+
+/* GET edit user page. */
+router.get('/edit/:id', function(req, res, next) {
+  get(req.params.id, (result) => {
+    res.render('./users/form', { title:'Editar usuário', action: 'update/' + req.params.id, user: result });
+  }, (err) => {
+    console.log('error on create');
+    console.error(err);
+  });
+});
+
+/* POST update user */
+router.post('/update/:id', function(req, res, next) {
+  update(req.params.id, req.body, (result) => {
+    res.redirect('/users');
+  }, (err) => {
+    console.log('error on create');
+    console.error(err);
+  });
+});
+
+/* GET delete user */
+router.get('/delete/:id', function(req, res, next) {
+  remove(req.params.id, (result) => {
+    res.redirect('/users');
+  }, (err) => {
+    console.log('error on delete');
+    console.error(err);
+  });
+});
+
+
 
 function listAll(success, error) {
   console.log('Getting all users');
@@ -38,6 +83,8 @@ function listAll(success, error) {
 
 function create(user, success, error) {
 
+  console.log(user);
+
   if (!user) {
     error({message: 'User is undefined!'});
     return;
@@ -48,15 +95,16 @@ function create(user, success, error) {
     return;
   }
 
-  db.query(`INSERT INTO users(login, password, name, birthday, tel, photo_url, type)
-    VALUES (:login, :password, :name, :birthday, :tel, :photo_url, :type)`,
+  db.query(`INSERT INTO users(login, password, name, email, birthdate, phone, photo_url, type)
+    VALUES (:login, :password, :name, :email, :birthdate, :phone, :photo_url, :type)`,
     {
       replacements: {
         login: user.login,
         password: user.password,
         name: user.name,
-        birthday: user.birthday,
-        tel: user.tel,
+        email: user.email,
+        birthdate: user.birthdate,
+        phone: user.phone,
         photo_url: user.photo_url,
         type: user.type
       },
@@ -64,9 +112,9 @@ function create(user, success, error) {
     }
   ).then( (result) => {
 
-    console.log(`\n${result}#${name} has been created!`);
+    console.log(`\n${result}#${user.name} has been created!`);
     Log.save('1', 'INSERT', 'USER', result);
-    sucess({ id: result, message: `${result}#${name} foi criado com sucesso!`});
+    success({ id: result, message: `${result}#${user.name} foi criado com sucesso!`});
   }).catch(err => {
 
     if(err.errors && err.errors[0].message.toLowerCase().includes("unique")) {
@@ -84,7 +132,7 @@ function get(id, success, error) {
   }).then(data => {
     Log.save('1', 'VIEW', 'USER', id);
     if (data) {
-      success(data);
+      success(data[0]);
     } else {
       success(null);
     }
@@ -114,8 +162,7 @@ function search(name, success, error) {
   });
 }
 
-function update(user, success, error) {
-
+function update(id, user, success, error) {
   if (!user) {
     error({message: 'User is undefined!'});
     return;
@@ -126,24 +173,25 @@ function update(user, success, error) {
     return;
   }
 
-  db.query('UPDATE users u SET u.login = :login, u.password = :password, u.name = :name, u.tel = :tel, u.photo_url = :photo_url, u.birthday = :birthday, u.type = :type WHERE u.id = :id',
+  db.query('UPDATE users u SET u.login = :login, u.password = :password, u.name = :name, u.email = :email, u.phone = :phone, u.photo_url = :photo_url, u.birthdate = :birthdate, u.type = :type WHERE u.id = :id',
     {
       replacements: {
-        id: user.id,
+        id: id,
         login: user.login,
         password: user.password,
         name: user.name,
-        tel: user.tel,
-        photo_url: user.photoUrl,
-        birthday: user.birthday,
+        email: user.email,
+        phone: user.phone,
+        photo_url: user.photo_url,
+        birthdate: user.birthdate,
         type: user.type
       },
       type: Sequelize.QueryTypes.PUT
     }
   ).then(function (result) {
-    console.log(`\n${result}#${name} has been updated!`);
+    console.log(`\n${result}#${user.name} has been updated!`);
     Log.save('1', 'ALTER', 'USER', user.id);
-    success(`${result}#${name} has been updated!`);
+    success(`${result}#${user.name} has been updated!`);
   }).catch(err => {
     console.error(err);
     error(err);
