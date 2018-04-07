@@ -1,14 +1,16 @@
-var Sequelize = require('sequelize');
-var db = require('../db/connection');
 var express = require('express');
-var Log = require('../Log');
 var router = express.Router();
+var { UserService }  = require('../services/users');
+var Log = require('../helpers/log');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   
-  listAll((result) => {
-    console.log(result);
+  UserService.listAll((result) => {
+    var user = req.cookies['ecommerce-user'];
+    console.log('Cookies: ', user);
+
+    // Log.save(user.id, 'LIST', 'USER', null);
     res.render('./users/index', { title:'Usuários', users: result });
   }, (err) => {
     console.log('error on listAll');
@@ -17,151 +19,45 @@ router.get('/', function(req, res, next) {
 
 });
 
-function listAll(success, error) {
-  console.log('Getting all users');
+router.post('/', function(req, res, next) {
 
-  db.query('SELECT * FROM users', {
-    type: Sequelize.QueryTypes.SELECT
-  }).then(data => {
-    if (data) {
-      console.log(data)
-      success(data);
-      Log.save('1', 'LIST', 'USER', null);
+  var user = {
+    login: req.body.login,
+    password: req.body.password,
+    email: req.body.email,
+    name: req.body.name,
+    photo_url: req.body.photo_url,
+    birthdate: req.body.birthdate,
+    phone: req.body.phone,
+    type: req.body.type,
+  }
+
+  console.log('USER', user);
+
+  UserService.create(user, (result) => {
+    res.status(200).redirect('/users');
+  }, (error) => {
+    if(error && error.message) {
+      alert(error.message);
     } else {
-      success([]);
+      Log.save('INSERT', 'USER', user.login);
+      console.log(error);
+      res.status(500).redirect('/users');
     }
-  }).catch(err => {
-    console.error(err);
-    error(err);
   });
-}
 
-function create(user, success, error) {
+});
 
-  if (!user) {
-    error({message: 'User is undefined!'});
-    return;
-  }
+router.get('/:id', (req, res) => {
 
-  if (!user.login || !user.password || !user.name || !user.photo_url) {
-    error({message: 'User needs login, password, name and photo_url filled!'});
-    return;
-  }
-
-  db.query(`INSERT INTO users(login, password, name, birthday, tel, photo_url, type)
-    VALUES (:login, :password, :name, :birthday, :tel, :photo_url, :type)`,
-    {
-      replacements: {
-        login: user.login,
-        password: user.password,
-        name: user.name,
-        birthday: user.birthday,
-        tel: user.tel,
-        photo_url: user.photo_url,
-        type: user.type
-      },
-      type: Sequelize.QueryTypes.INSERT
-    }
-  ).then( (result) => {
-
-    console.log(`\n${result}#${name} has been created!`);
-    Log.save('1', 'INSERT', 'USER', result);
-    sucess({ id: result, message: `${result}#${name} foi criado com sucesso!`});
-  }).catch(err => {
-
-    if(err.errors && err.errors[0].message.toLowerCase().includes("unique")) {
-      error({message: 'This login is already in use'});
-    } else {
-      error(err);
-    }
-  })
-}
-
-function get(id, success, error) {
-  db.query('SELECT * FROM users WHERE id = :id', {
-    replacements:  { id: id },
-    type: Sequelize.QueryTypes.SELECT
-  }).then(data => {
-    Log.save('1', 'VIEW', 'USER', id);
-    if (data) {
-      success(data);
-    } else {
-      success(null);
-    }
-  }).catch(err => {
-    console.error(err);
-    error(err);
+  UserService.get(id, (result) => {
+    Log.save('VIEW', 'USER', data.login);
+    res.status(200).redirect('/show', { user: result });
+  }, (error) => {
+    console.log(error);
+    res.status(500).redirect('/users');
   });
-}
 
-function search(name, success, error) {
-  name = "%"+name+"%";
-
-  db.query('SELECT * FROM users WHERE name like :name OR login like : name', {
-    replacements:  { name: name },
-    type: Sequelize.QueryTypes.SELECT
-  }).then(data => {
-    Log.save('1', 'SEARCH', 'USER', null);
-    
-    if (data) {
-      success(data);
-    } else {  
-      success(null);
-    }
-  }).catch(err => {
-    console.error(err);
-    error(err);
-  });
-}
-
-function update(user, success, error) {
-
-  if (!user) {
-    error({message: 'User is undefined!'});
-    return;
-  }
-
-  if (!user.login || !user.password || !user.name || !user.photo_url) {
-    error({message: 'User needs login, password, name and photo_url filled!'});
-    return;
-  }
-
-  db.query('UPDATE users u SET u.login = :login, u.password = :password, u.name = :name, u.tel = :tel, u.photo_url = :photo_url, u.birthday = :birthday, u.type = :type WHERE u.id = :id',
-    {
-      replacements: {
-        id: user.id,
-        login: user.login,
-        password: user.password,
-        name: user.name,
-        tel: user.tel,
-        photo_url: user.photoUrl,
-        birthday: user.birthday,
-        type: user.type
-      },
-      type: Sequelize.QueryTypes.PUT
-    }
-  ).then(function (result) {
-    console.log(`\n${result}#${name} has been updated!`);
-    Log.save('1', 'ALTER', 'USER', user.id);
-    success(`${result}#${name} has been updated!`);
-  }).catch(err => {
-    console.error(err);
-    error(err);
-  })
-}
-
-function remove(id, success, error) {
-  db.query('DELETE FROM users WHERE id = :id ', {
-    replacements: { id: id },
-    type: Sequelize.QueryTypes.DELETE
-  }).then( (result) => {
-    console.log('User deleted.');
-    Log.save('1', 'DELETE', 'USER', id);
-    success(true);
-  }).catch(err => {
-    console.error(err);
-    error(err);
-  })
-}
+});
 
 module.exports = router;
