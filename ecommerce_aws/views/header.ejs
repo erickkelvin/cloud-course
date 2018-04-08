@@ -19,10 +19,16 @@
       <span>SmartVendas</span>
     </div>
     <div id='user'>
-      <% if (false) { %>
+      <% if (true) { %>
         <div class='user-logged-in'>
-          <img class='user-picture' src='https://erickkelvin.github.io/img/erick_profile.jpg' />
-          <div class='user-name'>Erick Kelvin</div>
+          <div id='popup-parent'>
+            <div class='user-name'>Erick Kelvin</div>
+            <img class='user-picture' src='https://erickkelvin.github.io/img/erick_profile.jpg' />
+          </div>
+          <div id="popup-content">
+            <a href='/admin'>Painel</a>
+            <a href='/logout' style='font-size: 10px;margin-top:10px;'>Sair</a>
+          </div>
         </div>
       <% } else { %>
         <div class='user-menu'>
@@ -36,12 +42,15 @@
   </div>
   <div id='main-menu'>
     <div>
-      Início
+      <a href='/'>Início</a>
     </div>
     <div>
-      Produtos
+      <a href='/sale'>Promoções</a>
     </div>
     <div>
-      Sei lá
+      <a href='/products'>Produtos</a>
+    </div>
+    <div>
+      Lista de desejos
     </div>
   </div>

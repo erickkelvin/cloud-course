@@ -1,29 +1,40 @@
 var Sequelize = require('sequelize');
-var db = require('../db/connection');
+var db = require('../../db/connection');
 var express = require('express');
-var Log = require('../Log');
+var Log = require('../../Log');
 var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  listAll((result) => {
-    console.log(result);
-    res.render('./users/index', { title:'Usuários', users: result });
-  }, (err) => {
-    console.log('error on listAll');
-    console.error(err);
-  });
+  if (req.query.search) {
+    search(req.query.search, (result) => {
+      console.log(result);
+      res.render('./admin/users/index', { title:'Usuários', users: result, query: req.query.search });
+    }, (err) => {
+      console.log('error on search');
+      console.error(err);
+    });
+  }
+  else {
+    listAll((result) => {
+      console.log(result);
+      res.render('./admin/users/index', { title:'Usuários', users: result, query: null });
+    }, (err) => {
+      console.log('error on listAll');
+      console.error(err);
+    });
+  }
 });
 
 /* GET new user page. */
 router.get('/new', function(req, res, next) {
-  res.render('./users/form', { title:'Adicionar novo usuário', action: 'create', user: {} });
+  res.render('./admin/users/form', { title:'Adicionar novo usuário', action: 'create', user: {} });
 });
 
 /* POST create user */
 router.post('/create', function(req, res, next) {
   create(req.body, (result) => {
-    res.redirect('/users');
+    res.redirect('/admin/users');
   }, (err) => {
     console.log('error on create');
     console.error(err);
@@ -33,7 +44,7 @@ router.post('/create', function(req, res, next) {
 /* GET edit user page. */
 router.get('/edit/:id', function(req, res, next) {
   get(req.params.id, (result) => {
-    res.render('./users/form', { title:'Editar usuário', action: 'update/' + req.params.id, user: result });
+    res.render('./admin/users/form', { title:'Editar usuário', action: 'update/' + req.params.id, user: result });
   }, (err) => {
     console.log('error on create');
     console.error(err);
@@ -43,7 +54,7 @@ router.get('/edit/:id', function(req, res, next) {
 /* POST update user */
 router.post('/update/:id', function(req, res, next) {
   update(req.params.id, req.body, (result) => {
-    res.redirect('/users');
+    res.redirect('/admin/users');
   }, (err) => {
     console.log('error on create');
     console.error(err);
@@ -53,13 +64,12 @@ router.post('/update/:id', function(req, res, next) {
 /* GET delete user */
 router.get('/delete/:id', function(req, res, next) {
   remove(req.params.id, (result) => {
-    res.redirect('/users');
+    res.redirect('/admin/users');
   }, (err) => {
     console.log('error on delete');
     console.error(err);
   });
 });
-
 
 
 function listAll(success, error) {
@@ -145,7 +155,7 @@ function get(id, success, error) {
 function search(name, success, error) {
   name = "%"+name+"%";
 
-  db.query('SELECT * FROM users WHERE name like :name OR login like : name', {
+  db.query('SELECT * FROM users WHERE name like :name OR login like :name', {
     replacements:  { name: name },
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {

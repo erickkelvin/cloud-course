@@ -1,0 +1,51 @@
+<% include ../../header %>
+  <div class='content' id='users-index'>
+    <h1>
+      <%= title %>
+      <div class='search-crud-input'>
+        <form action='/admin/users/' method='get'>
+          <input type='search' name='search' placeholder='Buscar usuário' />
+        </form>
+        <i class='fa fa-search'></i>
+      </div>
+      <a class='crud-button crud-new' href='/admin/users/new'>
+        <i class='fa fa-user-plus'></i> Adicionar novo
+      </a>
+    </h1>
+    <% if (query) { %>
+      <h2>Busca por "<%= query %>"</h2>
+    <% } %>
+    <% if (users.length > 0) { %>
+      <table>
+        <tr>
+          <th class='user-info'>Informações dos usuários</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <% users.forEach(function(user){ %>
+          <tr class="user-row">
+            <td class='user-info'>
+              <img class='user-photo' src="<%= user.photo_url %>"/>
+              <div class='user-name'>
+                <span><%= user.name %></span>
+                <span><%= user.login %></span>
+              </div>
+              <div class="user-email">E-mail: <%= user.email %></div>
+              <div class="user-birthdate">Data de nascimento: <%= user.birthdate %></div>
+              <div class="user-phone">Telefone: <%= user.phone %></div>
+            </td>
+            <td class='user-action'>
+              <a href='/admin/users/edit/<%= user.id %>'><i class='fa fa-edit'></i> Editar</a>
+            </td>
+            <td class='user-action'>
+              <a href='/admin/users/delete/<%= user.id %>'><i class='fa fa-trash'></i> Remover</a>
+            </td>
+            
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      Nenhum usuário encontrado.
+    <% } %>
+  </div>
+<% include ../../footer %>

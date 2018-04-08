@@ -1,0 +1,48 @@
+<% include ../../header %>
+  <div class='content' id='users-form'>
+    <h1>
+      <%= title %>
+      <a class='crud-button crud-index' href='/admin/users'>
+        <i class='fa fa-users'></i> Ver todos os usuários
+      </a>
+    </h1>
+    <form action="/admin/users/<%= action %>" method="POST">
+      <label for="login">
+        Login:
+        <input type="text" id="login" name="login" value="<%= user.login %>" required/>
+      </label>
+      <label for="password">
+        Senha:
+        <input type="password" id="password" name="password" value="<%= user.password %>" required/>
+      </label>
+      <label for="name">
+        Nome:
+        <input type="text" id="name" name="name" value="<%= user.name %>" required/>
+      </label>
+      <label for="email">
+        E-mail:
+        <input type="email" id="email" name="email" value="<%= user.email %>" required/>
+      </label>
+      <label for="birthdate">
+        Data de nascimento:
+        <input type="date" id="birthdate" name="birthdate" value="<%= user.birthdate %>" max="<%= new Date().toJSON().slice(0,10) %>" required />
+      </label>
+      <label for="phone">
+        Telefone:
+        <input type="tel" id="phone" name="phone" value="<%= user.phone %>" maxlength="15" required />
+      </label>
+      <label for="photo_url">
+        Foto:
+        <input type="text" id="photo_url" name="photo_url" value="<%= user.photo_url %>" required/>
+      </label>
+      <label for="type">
+        Tipo:
+        <select id='type' name='type'>
+          <option value="CLI" <%= user.type == 'CLI' ? 'selected' : '' %>>Cliente</option>
+          <option value="ADM" <%= user.type == 'ADM' ? 'selected' : '' %>>Administrador</option>
+        </select>
+      </label>
+      <input type="submit" value="Salvar" />
+    </form>
+  </div>
+<% include ../../footer %>
