@@ -6,7 +6,7 @@
         <i class='fa fa-archive'></i> Ver todos os produtos
       </a>
     </h1>
-    <form action="/admin/products/<%= action %>" method="POST">
+    <form action="/admin/products/<%= action %>" method="POST" enctype="multipart/form-data">
       <label for="name">
         Nome:
         <input type="text" id="name" name="name" value="<%= product.name %>" required/>
@@ -28,7 +28,7 @@
         <input type="number" id="price" name="price" min="0" max="99999999" step=".01" value="<%= product.price %>"/>
       </label>
       <div id="photo-container">
-        <div id="photo-button">
+        <div id="photo-button" class="<%= product.photo_url ? 'active' :''%>">
           <img class='user-photo' src="<%= product.photo_url ? product.photo_url : '/images/default-product.png' %>" />
           <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
         </div> 

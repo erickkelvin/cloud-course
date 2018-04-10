@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var { db, uploadToS3 } = require('../db');
+var { db } = require('../db');
 var Log = require('../helpers/log');
 
 function ProductService (){}
@@ -23,7 +23,7 @@ ProductService.listAll = (success, error) => {
 }
 
 ProductService.create = (product, photo_url, success, error) => {
-
+  
   if (!product) {
     error({message: 'Product is undefined!'});
     return;
@@ -89,6 +89,11 @@ ProductService.search = (query, success, error) => {
 }
 
 ProductService.update = (id, product, photo_url, success, error) => {
+  let photo_url_new = photo_url;
+
+  if (product.photo_url && !photo_url) {
+    photo_url_new = product.photo_url;
+  }
 
   db.query(`UPDATE products p
       SET p.name = :name,
@@ -105,7 +110,7 @@ ProductService.update = (id, product, photo_url, success, error) => {
         description: product.description,
         manufacturer: product.manufacturer,
         quantity: product.quantity,
-        photo_url: photo_url,
+        photo_url: photo_url_new,
         price: product.price
       },
       type: Sequelize.QueryTypes.UPDATE

@@ -24,7 +24,6 @@ UserService.listAll = (success, error) => {
 }
 
 UserService.create = (user, photo_url, success, error) => {
-  console.log(user);
   if (!user) {
     error({message: 'User is undefined!'});
     return;
