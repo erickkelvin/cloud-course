@@ -1,9 +1,8 @@
 var Sequelize = require('sequelize');
-
-var config = require('../config.json')[process.env.NODE_ENV];
+var config = require('./config.json')[process.env.NODE_ENV];
 // console.log('Configurations\n', config);
 
-var sequelize = new Sequelize(
+var db = new Sequelize(
   config.database,
   config.username,
   config.password,
@@ -16,4 +15,4 @@ var sequelize = new Sequelize(
   }
 );
 
-module.exports = sequelize;
+module.exports = { db } ;

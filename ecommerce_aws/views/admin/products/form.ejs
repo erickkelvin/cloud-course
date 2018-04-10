@@ -1,0 +1,44 @@
+<% include ../../header %>
+  <div class='content crud-form' id='products-form'>
+    <h1>
+      <%= title %>
+      <a class='crud-button crud-index' href='/admin/products'>
+        <i class='fa fa-archive'></i> Ver todos os produtos
+      </a>
+    </h1>
+    <form action="/admin/products/<%= action %>" method="POST">
+      <label for="name">
+        Nome:
+        <input type="text" id="name" name="name" value="<%= product.name %>" required/>
+      </label>
+      <label for="description">
+        Descrição:
+        <input type="text" id="description" name="description" value="<%= product.description %>"/>
+      </label>
+      <label for="manufacturer">
+        Fabricante:
+        <input type="text" id="manufacturer" name="manufacturer" value="<%= product.manufacturer %>"/>
+      </label>
+      <label for="quantity">
+        Quantidade:
+        <input type="number" id="quantity" name="quantity" min="0" max="999999999" value="<%= product.quantity %>"/>
+      </label>
+      <label for="price">
+        Preço (R$):
+        <input type="number" id="price" name="price" min="0" max="99999999" step=".01" value="<%= product.price %>"/>
+      </label>
+      <div id="photo-container">
+        <div id="photo-button">
+          <img class='user-photo' src="<%= product.photo_url ? product.photo_url : '/images/default-product.png' %>" />
+          <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
+        </div> 
+        <label for="photo">
+          <input type="file" id="photo" name="photo" />
+        </label>
+      </div>
+      
+      <input type="hidden" id="photo_url" name="photo_url" value="<%= product.photo_url %>" />
+      <input type="submit" value="Salvar" />
+    </form>
+  </div>
+<% include ../../footer %>
