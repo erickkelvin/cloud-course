@@ -2,6 +2,7 @@
   <div class='content' id='users-index'>
     <h1>
       <%= title %>
+      <a href='/admin' class='parent-link'>« Voltar ao painel</a>
       <div class='search-crud-input'>
         <form action='/admin/users/' method='get'>
           <input type='search' name='search' placeholder='Buscar usuário' />
@@ -16,16 +17,16 @@
       <h2>Busca por "<%= query %>"</h2>
     <% } %>
     <% if (users.length > 0) { %>
-      <table>
+      <table class='crud-table'>
         <tr>
-          <th class='user-info'>Informações dos usuários</th>
+          <th>Informações dos usuários</th>
           <th></th>
           <th></th>
         </tr>
         <% users.forEach(function(user){ %>
-          <tr class="user-row">
-            <td class='user-info'>
-              <img class='user-photo' src="<%= user.photo_url %>"/>
+          <tr class="crud-row">
+            <td class='crud-info'>
+              <img class='user-photo' src="<%= user.photo_url.length>0 ? user.photo_url : '/images/default-user.png' %>" />
               <div class='user-name'>
                 <span><%= user.name %></span>
                 <span><%= user.login %></span>
@@ -34,13 +35,12 @@
               <div class="user-birthdate">Data de nascimento: <%= user.birthdate %></div>
               <div class="user-phone">Telefone: <%= user.phone %></div>
             </td>
-            <td class='user-action'>
+            <td class='crud-action'>
               <a href='/admin/users/edit/<%= user.id %>'><i class='fa fa-edit'></i> Editar</a>
             </td>
-            <td class='user-action'>
+            <td class='crud-action'>
               <a href='/admin/users/delete/<%= user.id %>'><i class='fa fa-trash'></i> Remover</a>
             </td>
-            
           </tr>
         <% }) %>
       </table>

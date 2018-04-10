@@ -9,6 +9,13 @@ $(document).ready(function() {
     $(this).val($(this).val().replace(/^(\d{2})(\d{5})(\d)+$/, "($1) $2-$3"));
   });
 
+  $(".crud-form #photo-container #photo-button").click(function() {
+    $("input#photo_url").val("");
+    $("#users-form #photo-container img").attr("src","/images/default-user.png");
+    $("#products-form #photo-container img").attr("src","/images/default-product.png");
+    $(this).removeClass("active");
+  });
+
   $(window).click(function() {
     $("#popup-content").hide();
   });

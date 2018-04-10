@@ -1,47 +1,43 @@
 <% include ../../header %>
-  <div class='content' id='users-form'>
+  <div class='content crud-form' id='products-form'>
     <h1>
       <%= title %>
-      <a class='crud-button crud-index' href='/admin/users'>
-        <i class='fa fa-users'></i> Ver todos os usuários
+      <a class='crud-button crud-index' href='/admin/products'>
+        <i class='fa fa-archive'></i> Ver todos os produtos
       </a>
     </h1>
-    <form action="/admin/users/<%= action %>" method="POST">
-      <label for="login">
-        Login:
-        <input type="text" id="login" name="login" value="<%= user.login %>" required/>
-      </label>
-      <label for="password">
-        Senha:
-        <input type="password" id="password" name="password" value="<%= user.password %>" required/>
-      </label>
+    <form action="/admin/products/<%= action %>" method="POST">
       <label for="name">
         Nome:
-        <input type="text" id="name" name="name" value="<%= user.name %>" required/>
+        <input type="text" id="name" name="name" value="<%= product.name %>" required/>
       </label>
-      <label for="email">
-        E-mail:
-        <input type="email" id="email" name="email" value="<%= user.email %>" required/>
+      <label for="description">
+        Descrição:
+        <input type="text" id="description" name="description" value="<%= product.description %>"/>
       </label>
-      <label for="birthdate">
-        Data de nascimento:
-        <input type="date" id="birthdate" name="birthdate" value="<%= user.birthdate %>" max="<%= new Date().toJSON().slice(0,10) %>" required />
+      <label for="manufacturer">
+        Fabricante:
+        <input type="text" id="manufacturer" name="manufacturer" value="<%= product.manufacturer %>"/>
       </label>
-      <label for="phone">
-        Telefone:
-        <input type="tel" id="phone" name="phone" value="<%= user.phone %>" maxlength="15" required />
+      <label for="quantity">
+        Quantidade:
+        <input type="number" id="quantity" name="quantity" min="0" max="999999999" value="<%= product.quantity %>"/>
       </label>
-      <label for="photo_url">
-        Foto:
-        <input type="text" id="photo_url" name="photo_url" value="<%= user.photo_url %>" required/>
+      <label for="price">
+        Preço (R$):
+        <input type="number" id="price" name="price" min="0" max="99999999" step=".01" value="<%= product.price %>"/>
       </label>
-      <label for="type">
-        Tipo:
-        <select id='type' name='type'>
-          <option value="CLI" <%= user.type == 'CLI' ? 'selected' : '' %>>Cliente</option>
-          <option value="ADM" <%= user.type == 'ADM' ? 'selected' : '' %>>Administrador</option>
-        </select>
-      </label>
+      <div id="photo-container">
+        <div id="photo-button">
+          <img class='user-photo' src="<%= product.photo_url ? product.photo_url : '/images/default-product.png' %>" />
+          <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
+        </div> 
+        <label for="photo">
+          <input type="file" id="photo" name="photo" />
+        </label>
+      </div>
+      
+      <input type="hidden" id="photo_url" name="photo_url" value="<%= product.photo_url %>" />
       <input type="submit" value="Salvar" />
     </form>
   </div>

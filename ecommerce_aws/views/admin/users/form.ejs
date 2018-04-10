@@ -1,12 +1,12 @@
 <% include ../../header %>
-  <div class='content' id='users-form'>
+  <div class='content crud-form' id='users-form'>
     <h1>
       <%= title %>
       <a class='crud-button crud-index' href='/admin/users'>
         <i class='fa fa-users'></i> Ver todos os usuários
       </a>
     </h1>
-    <form action="/admin/users/<%= action %>" method="POST">
+    <form action="/admin/users/<%= action %>" method="POST" enctype="multipart/form-data">
       <label for="login">
         Login:
         <input type="text" id="login" name="login" value="<%= user.login %>" required/>
@@ -31,10 +31,6 @@
         Telefone:
         <input type="tel" id="phone" name="phone" value="<%= user.phone %>" maxlength="15" required />
       </label>
-      <label for="photo_url">
-        Foto:
-        <input type="text" id="photo_url" name="photo_url" value="<%= user.photo_url %>" required/>
-      </label>
       <label for="type">
         Tipo:
         <select id='type' name='type'>
@@ -42,6 +38,18 @@
           <option value="ADM" <%= user.type == 'ADM' ? 'selected' : '' %>>Administrador</option>
         </select>
       </label>
+      Foto:
+      <div id="photo-container">
+        <div id="photo-button" class="<%= user.photo_url ? 'active' :'' %>">
+          <img class='user-photo' src="<%= user.photo_url ? user.photo_url : '/images/default-user.png' %>" />
+          <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
+        </div> 
+        <label for="photo">
+          <input type="file" id="photo" name="photo" />
+        </label>
+      </div>
+      
+      <input type="hidden" id="photo_url" name="photo_url" value="<%= user.photo_url %>" />
       <input type="submit" value="Salvar" />
     </form>
   </div>

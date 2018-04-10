@@ -2,6 +2,7 @@
   <div class='content' id='products-index'>
     <h1>
       <%= title %>
+      <a href='/admin' class='parent-link'>« Voltar ao painel</a>
       <div class='search-crud-input'>
         <form action='/admin/products/' method='get'>
           <input type='search' name='search' placeholder='Buscar produto' />
@@ -16,36 +17,31 @@
       <h2>Busca por "<%= query %>"</h2>
     <% } %>
     <% if (products.length > 0) { %>
-      <table>
+      <table class='crud-table'>
         <tr>
-          <th class='user-info'>Informações dos usuários</th>
+          <th>Informações dos produtos</th>
           <th></th>
           <th></th>
         </tr>
-        <% products.forEach(function(user){ %>
-          <tr class="user-row">
-            <td class='user-info'>
-              <img class='user-photo' src="<%= user.photo_url %>"/>
-              <div class='user-name'>
-                <span><%= user.name %></span>
-                <span><%= user.login %></span>
+        <% products.forEach(function(product){ %>
+          <tr class="crud-row">
+            <td class='crud-info'>
+              <img class='product-photo' src="<%= product.photo_url.length>0 ? product.photo_url : '/images/default-product.png' %>" />
+              <div class='product-name'>
+                <span><%= product.name %></span>
               </div>
-              <div class="user-email">E-mail: <%= user.email %></div>
-              <div class="user-birthdate">Data de nascimento: <%= user.birthdate %></div>
-              <div class="user-phone">Telefone: <%= user.phone %></div>
             </td>
-            <td class='user-action'>
-              <a href='/admin/products/edit/<%= user.id %>'><i class='fa fa-edit'></i> Editar</a>
+            <td class='crud-action'>
+              <a href='/admin/products/edit/<%= product.id %>'><i class='fa fa-edit'></i> Editar</a>
             </td>
-            <td class='user-action'>
-              <a href='/admin/products/delete/<%= user.id %>'><i class='fa fa-trash'></i> Remover</a>
+            <td class='crud-action'>
+              <a href='/admin/products/delete/<%= product.id %>'><i class='fa fa-trash'></i> Remover</a>
             </td>
-            
           </tr>
         <% }) %>
       </table>
     <% } else { %>
-      Nenhum usuário encontrado.
+      Nenhum produto encontrado.
     <% } %>
   </div>
 <% include ../../footer %>
