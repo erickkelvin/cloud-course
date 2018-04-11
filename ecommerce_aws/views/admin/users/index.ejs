@@ -1,7 +1,7 @@
 <% include ../../header %>
   <div class='content' id='users-index'>
     <h1>
-      <%= title %>
+      <a href='/admin/users' class='title-link'><%= title %></a>
       <a href='/admin' class='parent-link'>« Voltar ao painel</a>
       <div class='search-crud-input'>
         <form action='/admin/users/' method='get'>
@@ -14,17 +14,25 @@
       </a>
     </h1>
     <% if (query) { %>
-      <h2>Busca por "<%= query %>"</h2>
+      <div class="search-results-head">
+        <div>Resultado da busca por '<%= query %>'</div>
+        <% if (users.length > 0) { %>
+          <% const plural = users.length > 1 ? 's' : ''; %>
+          <div><%= users.length %> usuário<%= plural %> encontrado<%= plural %></div>
+        <% } %>
+      </div>
     <% } %>
     <% if (users.length > 0) { %>
       <table class='crud-table'>
         <tr>
-          <th>Informações dos usuários</th>
+          <th class='crud-id'>#</th>
+          <th>Detalhes dos usuários</th>
           <th></th>
           <th></th>
         </tr>
         <% users.forEach(function(user){ %>
           <tr class="crud-row">
+            <td class='crud-id'><%= user.id %></td>
             <td class='crud-info'>
               <img class='user-photo' src="<%= user.photo_url.length>0 ? user.photo_url : '/images/default-user.png' %>" />
               <div class='user-name'>
@@ -39,7 +47,7 @@
               <a href='/admin/users/edit/<%= user.id %>'><i class='fa fa-edit'></i> Editar</a>
             </td>
             <td class='crud-action'>
-              <a href='/admin/users/delete/<%= user.id %>'><i class='fa fa-trash'></i> Remover</a>
+              <a href='/admin/users/delete/<%= user.id %>' onclick="return confirm('Esta ação removerá o usuário permanentemente. Deseja continuar?');"><i class='fa fa-trash'></i> Remover</a>
             </td>
           </tr>
         <% }) %>
