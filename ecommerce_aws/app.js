@@ -4,8 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var { checkAdmin } = require('./services/auth');
 
 var index = require('./routes/index');
+var auth = require('./routes/auth');
 var admin = require('./routes/admin/index');
 var users = require('./routes/admin/users');
 var products = require('./routes/admin/products');
@@ -23,9 +26,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false
+}));
 
 // Routes
+app.all("/admin", checkAdmin);
+app.all("/admin/*", checkAdmin);
 app.use('/', index);
+app.use('/', auth);
 app.use('/admin', admin);
 app.use('/admin/users', users);
 app.use('/admin/products', products);

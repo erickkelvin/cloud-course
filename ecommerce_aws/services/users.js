@@ -5,7 +5,7 @@ var Log = require('../helpers/log');
 var loggedUser = null;
 
 function UserService (){}
-UserService.listAll = (success, error) => {
+UserService.getAll = (success, error) => {
   console.log('Getting all users');
 
   db.query('SELECT * FROM users', {

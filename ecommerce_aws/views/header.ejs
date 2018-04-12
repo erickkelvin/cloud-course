@@ -9,7 +9,6 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' />
   <script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
-  <script type='text/javascript' src='/javascripts/script.js'></script>
 </head>
 
 <body>
@@ -19,11 +18,11 @@
       <span>SmartVendas</span>
     </a>
     <div id='user'>
-      <% if (true) { %>
+      <% if (session.user) { %>
         <div class='user-logged-in'>
           <div id='popup-parent'>
-            <div class='user-name'>Erick Kelvin</div>
-            <img class='user-picture' src='https://erickkelvin.github.io/img/erick_profile.jpg' />
+            <div class='user-name'><%= session.user.name %></div>
+            <img class='user-picture' src='<%= session.user.photo_url %>' />
           </div>
           <div id="popup-content">
             <a href='/admin'>Painel</a>

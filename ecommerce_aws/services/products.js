@@ -3,7 +3,7 @@ var { db } = require('../db');
 var Log = require('../helpers/log');
 
 function ProductService (){}
-ProductService.listAll = (success, error) => {
+ProductService.getAll = (success, error) => {
   console.log('Getting all products');
 
   db.query('SELECT * FROM products', {

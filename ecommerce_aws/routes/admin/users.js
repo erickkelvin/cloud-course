@@ -9,21 +9,21 @@ router.get('/', function(req, res, next) {
   if (req.query.search) {
     UserService.search(req.query.search, (result) => {
       console.log(result);
-      res.render('./admin/users/index', { title:'Usuários', users: result, query: req.query.search });
+      res.render('./admin/users/index', { title:'Usuários', users: result, query: req.query.search, session: req.session });
     }, (err) => {
       console.log('error on search');
       console.error(err);
     });
   }
   else {
-    UserService.listAll((result) => {
+    UserService.getAll((result) => {
       var user = req.cookies['ecommerce-user'];
       console.log('Cookies: ', user);
 
       // Log.save(user.id, 'LIST', 'USER', null);
-      res.render('./admin/users/index', { title:'Usuários', users: result, query: null });
+      res.render('./admin/users/index', { title:'Usuários', users: result, query: null, session: req.session });
     }, (err) => {
-      console.log('error on listAll');
+      console.log('error on getAll');
       console.error(err);
     });
   }
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 
 /* GET new user page. */
 router.get('/new', function(req, res, next) {
-  res.render('./admin/users/form', { title:'Adicionar novo usuário', action: 'create', user: {} });
+  res.render('./admin/users/form', { title:'Adicionar novo usuário', action: 'create', user: {}, session: req.session });
 });
 
 /* POST create user */
@@ -48,7 +48,7 @@ router.post('/create', upload.single('photo'), function(req, res, next) {
 /* GET edit user page. */
 router.get('/edit/:id', function(req, res, next) {
   UserService.get(req.params.id, (result) => {
-    res.render('./admin/users/form', { title:'Editar usuário', action: 'update/' + req.params.id, user: result });
+    res.render('./admin/users/form', { title:'Editar usuário', action: 'update/' + req.params.id, user: result, session: req.session });
   }, (err) => {
     console.log('error on retrieving user');
     console.error(err);

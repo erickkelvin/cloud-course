@@ -30,4 +30,9 @@ $(document).ready(function() {
     e.stopPropagation();
     $("#popup-content").fadeToggle(200);
   });
+
+  $(".login-message").fadeIn(100);
+
+  setTimeout(() => $(".login-message").fadeOut(500), 3000);
+
 });

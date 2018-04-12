@@ -3,16 +3,19 @@
     <h1>
       <%= title %>
     </h1>
-    <form method='post'>
-      <label class='user-login'>
-        <input type='text' placeholder='Usuário' />
+    <form action='/login' method='POST'>
+      <label class='user-login' for="login">
+        <input type='text' id="login" name="login" placeholder='Usuário' />
         <i class='fa fa-user'></i>
       </label>
-      <label class='user-password'>
-        <input type='password' placeholder='Senha' />
+      <label class='user-password' for="password">
+        <input type='password' id="password" name="password" placeholder='Senha' />
         <i class='fa fa-key'></i>
       </label>
       <input type='submit' value='Fazer login' />
     </form>
+    <% if (message) { %>
+      <div class='login-message'><i class='fa fa-exclamation-circle'></i><%= message %></div>
+    <% } %>
   </div>
 <% include ../footer %>
