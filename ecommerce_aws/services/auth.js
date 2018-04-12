@@ -9,7 +9,7 @@ authenticate = (username, password, callback) => {
         return callback(null, user);
       }
     });
-    return callback(err, null);
+    return callback();
   }, (err) => {
     console.log('error on getAll');
     console.error(err);
@@ -18,13 +18,35 @@ authenticate = (username, password, callback) => {
 }
 
 checkAdmin = (req, res, next) => {
-  if(req.session.userId) {
-    UserService.get(req.session.userId, (user) => {
+  if(req.session.user) {
+    UserService.get(req.session.user.id, (user) => {
       if (user.type == 'ADM') {
         next();
       }
       else {
         console.log('user not admin');
+        res.sendStatus(401);
+      }
+    }, (err) => {
+      console.log('error on getAll');
+      console.error(err);
+      res.status(401).redirect('/login');
+    });
+  }
+  else {
+    console.log('not logged in');
+    res.status(401).redirect('/login');
+  }
+}
+
+checkClient = (req, res, next) => {
+  if(req.session.user) {
+    UserService.get(req.session.user.id, (user) => {
+      if (user.type == 'CLI') {
+        next();
+      }
+      else {
+        console.log('user not client');
         res.sendStatus(401);
       }
     }, (err) => {
