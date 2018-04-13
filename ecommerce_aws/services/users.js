@@ -45,13 +45,13 @@ UserService.create = (user, photo_url, success, error) => {
         birthdate: user.birthdate,
         phone: user.phone,
         photo_url: photo_url,
-        type: user.type
+        type: user.type || 'CLI'
       },
       type: Sequelize.QueryTypes.INSERT
     }
   ).then((result) => {
-    console.log(`\n${result}#${user.name} has been created!`);
-    success(`${result}#${user.name} has been created!`);
+    console.log(`\n${user.name} has been created!`);
+    success(`\n${user.name} has been created!`);
   }).catch(err => {
     if (err.errors && err.errors[0].message.toLowerCase().includes("unique")) {
       error({ message: 'This login is already in use' });
@@ -99,7 +99,6 @@ UserService.search = (query, success, error) => {
 
 UserService.update = (id, user, photo_url, success, error) => {
   let photo_url_new = photo_url;
-
   if (user.photo_url && !photo_url) {
     photo_url_new = user.photo_url;
   }
@@ -109,14 +108,13 @@ UserService.update = (id, user, photo_url, success, error) => {
     return;
   }
 
-  if (!user.login || !user.password || !user.name || !user.email) {
-    error({message: 'User needs email, login, password and name filled!'});
+  if (!user.password || !user.name || !user.email) {
+    error({message: 'User needs email, password and name filled!'});
     return;
   }
 
   db.query(`UPDATE users u
-      SET u.login = :login,
-        u.password = :password,
+      SET u.password = :password,
         u.name = :name,
         u.email = :email,
         u.phone = :phone,
@@ -127,7 +125,6 @@ UserService.update = (id, user, photo_url, success, error) => {
     {
       replacements: {
         id: id,
-        login: user.login,
         password: user.password,
         name: user.name,
         email: user.email,
@@ -139,9 +136,12 @@ UserService.update = (id, user, photo_url, success, error) => {
       type: Sequelize.QueryTypes.UPDATE
     }
   ).then(result => {
-    console.log(`\n${result}#${user.name} has been updated!`);
+    console.log(`\n${user.name} has been updated!`);
     Log.save('ALTER', 'USER', user.login);
-    success(`${result}#${user.name} has been updated!`);
+    let user_new = user;
+    user_new.photo_url = photo_url_new;
+    user_new.id = id;
+    success(user_new);
   }).catch(err => {
     console.error(err);
     error(err);

@@ -38,7 +38,12 @@ router.get('/new', function(req, res, next) {
 router.post('/create', upload.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.create(req.body, file, (result) => {
-    res.redirect('/admin/users');
+    if (req.headers.referer.includes('admin')) {
+      res.redirect('/admin/users');
+    }
+    else {
+      res.redirect('/');
+    }
   }, (err) => {
     console.log('error on create');
     console.error(err);
@@ -57,9 +62,14 @@ router.get('/edit/:id', function(req, res, next) {
 
 /* POST update user */
 router.post('/update/:id', upload.single('photo'), function(req, res, next) {
+  console.log(req.headers.referer);
   const file = req.file ? req.file.location : '';
-  UserService.update(req.params.id, req.body, file, (result) => {
+  UserService.update(req.params.id, req.body, file, (user) => {
+    if (req.session.user.id == user.id) {
+      req.session.user = user;
+    }
     res.redirect('/admin/users');
+    
   }, (err) => {
     console.log('error on update');
     console.error(err);

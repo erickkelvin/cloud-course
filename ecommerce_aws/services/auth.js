@@ -30,12 +30,12 @@ checkAdmin = (req, res, next) => {
     }, (err) => {
       console.log('error on getAll');
       console.error(err);
-      res.status(401).redirect('/login');
+      res.status(401).redirect('/user/login');
     });
   }
   else {
     console.log('not logged in');
-    res.status(401).redirect('/login');
+    res.status(401).redirect('/user/login');
   }
 }
 
@@ -52,12 +52,12 @@ checkClient = (req, res, next) => {
     }, (err) => {
       console.log('error on getAll');
       console.error(err);
-      res.status(401).redirect('/login');
+      res.status(401).redirect('/user/login');
     });
   }
   else {
     console.log('not logged in');
-    res.status(401).redirect('/login');
+    res.status(401).redirect('/user/login');
   }
 }
 

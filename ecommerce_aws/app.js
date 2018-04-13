@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'work hard',
+  secret: 'very secret',
   resave: true,
   saveUninitialized: false
 }));
@@ -43,7 +43,7 @@ app.use('/admin/products', products);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error('Página não encontrada!');
   err.status = 404;
   next(err);
 });
@@ -56,7 +56,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { title: 'Erro ' + err.status, session: req.session });
 });
 
 module.exports = app;

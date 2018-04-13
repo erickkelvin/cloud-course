@@ -1,3 +1,11 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% include ./header %>
+  <div class='content' id='error'>
+    <h1>
+      <i class="fa fa-exclamation-circle"></i>
+      Erro <%= error.status %>
+    </h1>
+    <h2>
+      <%= message %>
+    </h2>
+  </div>
+<% include ./footer %>

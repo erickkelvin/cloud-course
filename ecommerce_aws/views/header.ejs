@@ -22,19 +22,22 @@
         <div class='user-logged-in'>
           <div id='popup-parent'>
             <div class='user-name'><%= session.user.name %></div>
-            <img class='user-picture' src='<%= session.user.photo_url %>' />
+            <img class='user-picture' src="<%= session.user.photo_url || '/images/default-user.png' %>" />
           </div>
           <div id="popup-content">
-            <a href='/admin'>Painel</a>
-            <a href='/logout' style='font-size: 10px;margin-top:10px;'>Sair</a>
+            <% if (session.user.type == 'ADM') { %>
+              <a href='/admin'>Painel</a>
+            <% } %>
+            <a href='/user/edit'>Perfil</a>
+            <a href='/user/logout' style='font-size: 10px;'>Sair</a>
           </div>
         </div>
       <% } else { %>
         <div class='user-menu'>
-          <a href='/register'>Cadastro</a>
+          <a href='/user/register'>Cadastro</a>
         </div>
         <div class='user-menu'>
-          <a href='/login'>Login</a>
+          <a href='/user/login'>Login</a>
         </div>
       <% } %>
     </div>

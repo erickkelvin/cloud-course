@@ -1,12 +1,9 @@
-<% include ../../header %>
-  <div class='content crud-form' id='users-form'>
+<% include ../header %>
+  <div class='content crud-form' id='auth-form'>
     <h1>
       <%= title %>
-      <a class='crud-button crud-index' href='/admin/users'>
-        <i class='fa fa-users'></i> Ver todos os usuários
-      </a>
     </h1>
-    <form action="/admin/users/<%= action %>" method="POST" enctype="multipart/form-data">
+    <form action="/user/<%= action %>" method="POST" enctype="multipart/form-data">
       <label for="login">
         Login:
         <input type="text" id="login" name="login" value="<%= user.login %>" required <%= action.includes('update') ? 'disabled' : '' %>/>
@@ -31,13 +28,6 @@
         Telefone:
         <input type="tel" id="phone" name="phone" value="<%= user.phone %>" maxlength="15" required />
       </label>
-      <label for="type">
-        Tipo:
-        <select id='type' name='type'>
-          <option value="CLI" <%= user.type == 'CLI' ? 'selected' : '' %>>Cliente</option>
-          <option value="ADM" <%= user.type == 'ADM' ? 'selected' : '' %>>Administrador</option>
-        </select>
-      </label>
       Foto:
       <div id="photo-container">
         <div id="photo-button" class="<%= user.photo_url ? 'active' :'' %>">
@@ -50,7 +40,8 @@
       </div>
       
       <input type="hidden" id="photo_url" name="photo_url" value="<%= user.photo_url %>" />
+      <input type="hidden" id="type" name="type" value="<%= user.type %>" />
       <input type="submit" value="Salvar" />
     </form>
   </div>
-<% include ../../footer %>
+<% include ../footer %>

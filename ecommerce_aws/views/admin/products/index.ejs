@@ -34,7 +34,7 @@
           <tr class="crud-row">
             <td class='crud-id'><%= product.id %></td>
             <td class='crud-info'>
-              <img class='product-photo' src="<%= product.photo_url.length>0 ? product.photo_url : '/images/default-product.png' %>" />
+              <img class='product-photo' src="<%= product.photo_url || '/images/default-product.png' %>" />
               <div class='product-name'>
                 <%= product.name %>
               </div>

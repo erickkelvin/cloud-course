@@ -136,14 +136,21 @@ div#login label {
   margin-left: 40px;
 }
 
-#login input[type='submit'] {
+input[type='submit'] {
   -webkit-appearance: none;
-  padding: 8px;
+  padding: 10px;
+  margin-top: 10px;
+  min-width: 70px;
   border-radius: 5px;
   background-color: var(--primary-color);
-  border: 1px solid #e06704;
+  border: 1px solid #ad4f03;
   color: #fff;
   cursor: pointer;
+  transition: .4s ease;
+}
+
+input[type='submit']:hover {
+  background-color: #be651c;
 }
 
 #login form .fa {
@@ -195,6 +202,15 @@ div#login label {
 #popup-content a {
   color: var(--primary-color);
   display: block;
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 2px;
+  transition: .2s ease;
+}
+
+#popup-content a:hover {
+background-color: var(--secondary-color);
+text-decoration: none;
 }
 
 /* AUTH END */
@@ -450,6 +466,11 @@ table.crud-table {
   text-align: center;
 }
 
+.crud-form input[disabled] {
+  background-color: #dddddd;
+  color: #8d8d8d;
+}
+
 .crud-form input[type='file'] {
   margin-top: 10px;
   background-color: #eeeeee;
@@ -466,16 +487,6 @@ table.crud-table {
   display:block;
   width: 100%;
   margin-top: 4px;
-}
-
-.crud-form input[type='submit'] {
-  -webkit-appearance: none;
-  padding: 8px;
-  border-radius: 5px;
-  background-color: var(--primary-color);
-  border: 1px solid #e06704;
-  color: #fff;
-  cursor: pointer;
 }
 
 .crud-form select {
@@ -512,3 +523,18 @@ a.title-link {
 }
 
 /* ADMIN END */
+
+/* ERROR BEGIN */
+
+#error {
+  margin-top: 5%;
+  text-align:center;
+}
+
+#error .fa {
+  display: block;
+  font-size: 40px;
+}
+
+
+/* ERROR END */

@@ -34,7 +34,7 @@
           <tr class="crud-row">
             <td class='crud-id'><%= user.id %></td>
             <td class='crud-info'>
-              <img class='user-photo' src="<%= user.photo_url.length>0 ? user.photo_url : '/images/default-user.png' %>" />
+              <img class='user-photo' src="<%= user.photo_url || '/images/default-user.png' %>" />
               <div class='user-name'>
                 <span><%= user.name %></span>
                 <span><%= user.login %></span>

@@ -29,7 +29,7 @@
       </label>
       <div id="photo-container">
         <div id="photo-button" class="<%= product.photo_url ? 'active' :''%>">
-          <img class='user-photo' src="<%= product.photo_url ? product.photo_url : '/images/default-product.png' %>" />
+          <img class='user-photo' src="<%= product.photo_url || '/images/default-product.png' %>" />
           <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
         </div> 
         <label for="photo">
