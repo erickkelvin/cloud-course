@@ -1,30 +1,34 @@
-var dynamoClient = require('aws-sdk').DynamoDB.DocumentClient;
+var AWS = require('aws-sdk');
+AWS.config.update({
+    region:'us-east-1'
+})
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 function Log(){}
-Log.save = function(id, action, object, objectId = null) {
-    /*var params = {
+Log.save = function(login, action, object, objectId = null) {
+    var params = {
         TableName: 'Log',
         Item: {
-            User: id,
-            Action: action,
-            Object: object,
-            Date: formatDate(new Date())
+            user: login,
+            action: action,
+            object: String(object),
+            date: new Date()
         }
     }
     if(objectId) {
-        params['ObjectId'] = objectId;
+        params.Item['objectId'] = objectId;
     }
 
-    dynamoClient.put(params, (err, data) => {
+    return dynamodb.put(params, (err, data) => {
         if(err) { console.log(err); }
-        else { console.log(data); }
-    });
-
-    if (objectId) {
-        console.log(`${id} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
-    } else {
-        console.log(`${id} - ${action} - ${object} - ${formatDate(new Date())}`);
-    }*/
+        else {
+            if (objectId) {
+                console.log(`${id} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
+            } else {
+                console.log(`${id} - ${action} - ${object} - ${formatDate(new Date())}`);
+            }
+        }
+    }).promise();
 }
 
 function formatDate(date) {

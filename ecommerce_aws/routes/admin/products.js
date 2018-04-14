@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
   if (req.query.search) {
     ProductService.search(req.query.search, (result) => {
       console.log(result);
+      Log.save(req.session.user.login, 'SEARCH', 'PRODUCT', req.query.search);
       res.render('./admin/products/index', { title:'Produtos', products: result, query: req.query.search, session: req.session });
     }, (err) => {
       console.log('error on search');
@@ -17,10 +18,7 @@ router.get('/', function(req, res, next) {
   }
   else {
     ProductService.getAll((result) => {
-      var user = req.cookies['ecommerce-user'];
-      console.log('Cookies: ', user);
-
-      // Log.save(product.id, 'LIST', 'PRODUCT', null);
+      Log.save(req.session.user.login, 'LIST', 'PRODUCT', null);
       res.render('./admin/products/index', { title:'Produtos', products: result, query: null, session: req.session });
     }, (err) => {
       console.log('error on getAll');
@@ -38,6 +36,7 @@ router.get('/new', function(req, res, next) {
 router.post('/create', upload.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   ProductService.create(req.body, file, (result) => {
+    Log.save(req.session.user.login, 'INSERT', 'PRODUCT', req.body.name);
     res.redirect('/admin/products');
   }, (err) => {
     console.log('error on create');
@@ -59,6 +58,7 @@ router.get('/edit/:id', function(req, res, next) {
 router.post('/update/:id', upload.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   ProductService.update(req.params.id, req.body, file, (result) => {
+    Log.save(req.session.user.login, 'ALTER', 'PRODUCT', req.body.name);
     res.redirect('/admin/products');
   }, (err) => {
     console.log('error on update');
@@ -69,6 +69,7 @@ router.post('/update/:id', upload.single('photo'), function(req, res, next) {
 /* GET delete product */
 router.get('/delete/:id', function(req, res, next) {
   ProductService.remove(req.params.id, (result) => {
+    Log.save(req.session.user.login, 'DELETE', 'PRODUCT', req.params.id);
     res.redirect('/admin/products');
   }, (err) => {
     console.log('error on delete');
@@ -79,7 +80,7 @@ router.get('/delete/:id', function(req, res, next) {
 /* GET product page */
 router.get('/:id', (req, res) => {
   ProductService.get(id, (result) => {
-    Log.save('VIEW', 'Product', data.login);
+    Log.save(req.session.user.login, 'VIEW', 'PRODUCT', result.name);
     res.redirect('/show', { product: result });
   }, (error) => {
     console.log(error);

@@ -6,13 +6,10 @@ var loggedUser = null;
 
 function UserService (){}
 UserService.getAll = (success, error) => {
-  console.log('Getting all users');
-
   db.query('SELECT * FROM users', {
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
     if (data) {
-      console.log(data)
       success(data);
     } else {
       success([]);
@@ -84,8 +81,6 @@ UserService.search = (query, success, error) => {
     replacements:  { query: query },
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
-    Log.save('SEARCH', 'USER', null);
-    
     if (data) {
       success(data);
     } else {  
@@ -137,7 +132,6 @@ UserService.update = (id, user, photo_url, success, error) => {
     }
   ).then(result => {
     console.log(`\n${user.name} has been updated!`);
-    Log.save('ALTER', 'USER', user.login);
     let user_new = user;
     user_new.photo_url = photo_url_new;
     user_new.id = id;
@@ -154,38 +148,11 @@ UserService.remove = (id, success, error) => {
     type: Sequelize.QueryTypes.DELETE
   }).then(result => {
     console.log('User deleted.');
-    Log.save('DELETE', 'USER', id);
     success(true);
   }).catch(err => {
     console.error(err);
     error(err);
   })
-}
-
-UserService.authenticate = (login, password, success, error) => {
-  db.query('SELECT * FROM users WHERE login = :login', {
-    replacements: { login: login },
-    type: Sequelize.QueryTypes.SELECT
-  }).then(result => {
-    if(result) {
-      console.log('result', result[0]);
-      if(result[0].password == password) {
-        loggedUser = result[0];
-        success(result[0]);
-      }
-      else { success(false); }
-
-    } else {
-      success(null);
-    }
-  }).catch(err => {
-    console.error(err);
-    error(err);
-  })
-}
-
-UserService.logout = () => {
-  loggedUser = null;
 }
 
 module.exports = { UserService, loggedUser }
