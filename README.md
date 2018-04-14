@@ -1,5 +1,6 @@
 # Cloud Course
-Repository containing the cloud course projects.
+Repository containing projects for the cloud course at UFC, using Amazon Web Services and Google Cloud Platform.
+
 
 ## AWS Project
 
