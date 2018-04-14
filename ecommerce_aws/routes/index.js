@@ -1,9 +1,16 @@
 var express = require('express');
 var router = express.Router();
+var { ProductService }  = require('../services/products');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'SmartVendas', session: req.session });
+  ProductService.getAll((result) => {
+    // Log.save(product.id, 'LIST', 'PRODUCT', null);
+    res.render('index', { title: 'SmartVendas', products: result, session: req.session });
+  }, (err) => {
+    console.log('error on getAll');
+    console.error(err);
+  });
 });
 
 /* GET sale page. */

@@ -13,19 +13,19 @@
       </label>
       <label for="description">
         Descrição:
-        <input type="text" id="description" name="description" value="<%= product.description %>"/>
+        <input type="text" id="description" name="description" value="<%= product.description %>" required/>
       </label>
       <label for="manufacturer">
         Fabricante:
-        <input type="text" id="manufacturer" name="manufacturer" value="<%= product.manufacturer %>"/>
+        <input type="text" id="manufacturer" name="manufacturer" value="<%= product.manufacturer %>" required/>
       </label>
       <label for="quantity">
         Quantidade:
-        <input type="number" id="quantity" name="quantity" min="0" max="999999999" value="<%= product.quantity %>"/>
+        <input type="number" id="quantity" name="quantity" min="0" max="999999999" value="<%= product.quantity %>" required/>
       </label>
       <label for="price">
         Preço (R$):
-        <input type="number" id="price" name="price" min="0" max="99999999" step=".01" value="<%= product.price %>"/>
+        <input type="number" id="price" name="price" min="0" max="99999999" step=".01" value="<%= product.price %>" required/>
       </label>
       <div id="photo-container">
         <div id="photo-button" class="<%= product.photo_url ? 'active' :''%>">
