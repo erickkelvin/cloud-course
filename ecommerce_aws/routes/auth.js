@@ -6,20 +6,23 @@ var { upload }  = require('../helpers/utils');
 
 /* GET login page. */
 router.get('/user/login', function(req, res, next) {
-  res.render('./auth/login', { title: 'Login', message: '', session: req.session});
+  if (req.session.user) {
+    res.redirect('/');
+  } else {
+    const error = req.session.error || '';
+    delete req.session.error;
+    res.render('./auth/login', { title: 'Login', error: error, session: req.session});
+  }
 });
 
 /* POST login page. */
 router.post('/user/login', function(req, res, next) {
-  authenticate(req.body.login, req.body.password, (error, user) => {
-    if (error) {
-      var err = new Error('Login ou senha incorretos!');
-      err.status = 401;
-      return res.render('./auth/login', { title: 'Login', message: 'Login ou senha incorretos!', session: req.session });
-    } else {
-      req.session.user = user;
-      return res.redirect('/');
-    }
+  authenticate(req.body.login, req.body.password, (user) => {
+    req.session.user = user;
+    res.redirect('/');
+  },(error) => {
+    req.session.error = 'Login ou senha incorretos!';
+    res.redirect('/user/login');
   });
 });
 

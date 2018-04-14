@@ -17,8 +17,6 @@ router.get('/', function(req, res, next) {
   }
   else {
     ProductService.getAll((result) => {
-      var user = req.cookies['ecommerce-user'];
-      console.log('Cookies: ', user);
 
       // Log.save(product.id, 'LIST', 'PRODUCT', null);
       res.render('./admin/products/index', { title:'Produtos', products: result, query: null, session: req.session });

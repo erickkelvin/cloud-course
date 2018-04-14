@@ -14,8 +14,8 @@
       </label>
       <input type='submit' value='Fazer login' />
     </form>
-    <% if (message) { %>
-      <div class='login-message'><i class='fa fa-exclamation-circle'></i><%= message %></div>
+    <% if (error) { %>
+      <div class='login-message'><i class='fa fa-exclamation-circle'></i><%= error %></div>
     <% } %>
   </div>
 <% include ../footer %>

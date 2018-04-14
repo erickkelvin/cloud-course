@@ -10,7 +10,6 @@ ProductService.getAll = (success, error) => {
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
     if (data) {
-      console.log(data)
       success(data);
       Log.save('LIST', 'PRODUCT', null);
     } else {

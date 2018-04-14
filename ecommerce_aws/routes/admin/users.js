@@ -17,9 +17,6 @@ router.get('/', function(req, res, next) {
   }
   else {
     UserService.getAll((result) => {
-      var user = req.cookies['ecommerce-user'];
-      console.log('Cookies: ', user);
-
       // Log.save(user.id, 'LIST', 'USER', null);
       res.render('./admin/users/index', { title:'Usuários', users: result, query: null, session: req.session });
     }, (err) => {
@@ -38,12 +35,7 @@ router.get('/new', function(req, res, next) {
 router.post('/create', upload.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.create(req.body, file, (result) => {
-    if (req.headers.referer.includes('admin')) {
-      res.redirect('/admin/users');
-    }
-    else {
-      res.redirect('/');
-    }
+    res.redirect('/admin/users');
   }, (err) => {
     console.log('error on create');
     console.error(err);
@@ -62,7 +54,6 @@ router.get('/edit/:id', function(req, res, next) {
 
 /* POST update user */
 router.post('/update/:id', upload.single('photo'), function(req, res, next) {
-  console.log(req.headers.referer);
   const file = req.file ? req.file.location : '';
   UserService.update(req.params.id, req.body, file, (user) => {
     if (req.session.user.id == user.id) {
