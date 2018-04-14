@@ -5,8 +5,6 @@ var { deletePhoto }  = require('../helpers/utils');
 
 function UserService() { }
 UserService.getAll = (success, error) => {
-  console.log('Getting all users');
-
   db.query('SELECT * FROM users', {
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
@@ -82,8 +80,6 @@ UserService.search = (query, success, error) => {
     replacements:  { query: query },
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
-    Log.save('SEARCH', 'USER', null);
-    
     if (data) {
       success(data);
     } else {  
@@ -135,7 +131,6 @@ UserService.update = (id, user, photo_url, success, error) => {
       }
     ).then(result => {
       console.log(`\n${user.name} has been updated!`);
-      Log.save('ALTER', 'USER', user.login);
       let user_new = user;
       user_new.photo_url = photo_url_new;
       user_new.id = id;
@@ -157,7 +152,6 @@ UserService.remove = (id, success, error) => {
       type: Sequelize.QueryTypes.DELETE
     }).then(result => {
       console.log('User deleted.');
-      Log.save('DELETE', 'USER', id);
       success(true);
     }).catch(err => {
       console.error(err);

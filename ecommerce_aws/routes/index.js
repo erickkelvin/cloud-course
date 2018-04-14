@@ -5,7 +5,6 @@ var { ProductService }  = require('../services/products');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   ProductService.getAll((result) => {
-    // Log.save(product.id, 'LIST', 'PRODUCT', null);
     res.render('index', { title: 'SmartVendas', products: result, session: req.session });
   }, (err) => {
     console.log('error on getAll');

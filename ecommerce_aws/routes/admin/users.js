@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
   if (req.query.search) {
     UserService.search(req.query.search, (result) => {
       console.log(result);
+      Log.save(req.session.user.login, 'SEARCH', 'USER', req.query.search);
       res.render('./admin/users/index', { title:'Usuários', users: result, query: req.query.search, session: req.session });
     }, (err) => {
       console.log('error on search');
@@ -17,7 +18,7 @@ router.get('/', function(req, res, next) {
   }
   else {
     UserService.getAll((result) => {
-      // Log.save(user.id, 'LIST', 'USER', null);
+      Log.save(req.session.user.login, 'LIST', 'USER', null);
       res.render('./admin/users/index', { title:'Usuários', users: result, query: null, session: req.session });
     }, (err) => {
       console.log('error on getAll');
@@ -35,6 +36,7 @@ router.get('/new', function(req, res, next) {
 router.post('/create', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.create(req.body, file, (result) => {
+    Log.save(req.session.user.login, 'INSERT', 'USER', req.body.login);
     res.redirect('/admin/users');
   }, (err) => {
     console.log('error on create');
@@ -56,7 +58,9 @@ router.get('/edit/:id', function(req, res, next) {
 router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.update(req.params.id, req.body, file, (user) => {
-    if (req.session.user.id == user.id) {
+    Log.save(req.session.user.login, 'ALTER', 'USER', req.params.login);
+
+    if (req.session.user.login == user.id) {
       req.session.user = user;
     }
     res.redirect('/admin/users');
@@ -70,6 +74,8 @@ router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next)
 /* GET delete user */
 router.get('/delete/:id', function(req, res, next) {
   UserService.remove(req.params.id, (result) => {
+    Log.save(req.session.user.login, 'DELETE', 'USER', req.params.login);
+
     res.redirect('/admin/users');
   }, (err) => {
     console.log('error on delete');
@@ -80,7 +86,8 @@ router.get('/delete/:id', function(req, res, next) {
 /* GET user page */
 router.get('/:id', (req, res) => {
   UserService.get(id, (result) => {
-    Log.save('VIEW', 'USER', data.login);
+    Log.save(req.session.user.login, 'VIEW', 'USER', id);
+
     res.redirect('/show', { user: result });
   }, (error) => {
     console.log(error);

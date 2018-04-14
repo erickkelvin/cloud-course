@@ -12,7 +12,6 @@ ProductService.getAll = (success, error) => {
   }).then(data => {
     if (data) {
       success(data);
-      Log.save('LIST', 'PRODUCT', null);
     } else {
       success([]);
     }
@@ -44,7 +43,6 @@ ProductService.create = (product, photo_url, success, error) => {
     }
   ).then( (result) => {
     console.log(`\n${result}#${product.name} has been created!`);
-    Log.save('INSERT', 'PRODUCT', product.name);
     success(`${result}#${product.name} has been created!`);
   }).catch(err => {
     error(err);
@@ -56,7 +54,6 @@ ProductService.get = (id, success, error) => {
     replacements:  { id: id },
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
-    Log.save('VIEW', 'PRODUCT', data.name);
     if (data) {
       success(data[0]);
     } else {
@@ -75,7 +72,6 @@ ProductService.search = (query, success, error) => {
     replacements:  { query: query },
     type: Sequelize.QueryTypes.SELECT
   }).then(data => {
-    Log.save('SEARCH', 'PRODUCT', null);
     
     if (data) {
       success(data);
@@ -126,7 +122,6 @@ ProductService.update = (id, product, photo_url, success, error) => {
       }
     ).then( (result) => {
       console.log(`\n${result}#${product.name} has been updated!`);
-      Log.save('ALTER', 'PRODUCT', product.name);
       success(`${result}#${product.name} has been updated!`);
     }).catch(err => {
       console.error(err);
@@ -145,7 +140,6 @@ ProductService.remove = (id, success, error) => {
       type: Sequelize.QueryTypes.DELETE
     }).then( (result) => {
       console.log('Product deleted.');
-      Log.save('DELETE', 'PRODUCT', id);
       success(true);
     }).catch(err => {
       console.error(err);
