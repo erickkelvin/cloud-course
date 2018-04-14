@@ -6,23 +6,20 @@ Repository containing the cloud course projects.
 ### Setup
 
 1. Configure the following AWS credentials using environment variables:
-
    * AWS_ACCESS_KEY_ID
    * AWS_SECRET_ACCESS_KEY
    * S3_BUCKET
 
-2. Clone the repository and then run in the terminal:
-
-    
-```bash
-cd ecommerce_aws 
-npm install
-```
+2. Clone the repository and then run in the terminal:  
+    ```bash
+    cd ecommerce_aws 
+    npm install
+    ```
     
 ### Run
 1. In the terminal, type:
 
-    ```
+    ```bash
     npm start
     ```
     
