@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var { ProductService }  = require('../../services/products');
-var { upload }  = require('../../helpers/utils');
+var { uploadPhoto }  = require('../../helpers/utils');
 var Log = require('../../helpers/log');
 
 /* GET products listing. */
@@ -33,7 +33,7 @@ router.get('/new', function(req, res, next) {
 });
 
 /* POST create product */
-router.post('/create', upload.single('photo'), function(req, res, next) {
+router.post('/create', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   ProductService.create(req.body, file, (result) => {
     res.redirect('/admin/products');
@@ -54,7 +54,7 @@ router.get('/edit/:id', function(req, res, next) {
 });
 
 /* POST update product */
-router.post('/update/:id', upload.single('photo'), function(req, res, next) {
+router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   ProductService.update(req.params.id, req.body, file, (result) => {
     res.redirect('/admin/products');

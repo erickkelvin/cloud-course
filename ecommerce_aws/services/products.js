@@ -1,8 +1,9 @@
 var Sequelize = require('sequelize');
 var { db } = require('../db');
 var Log = require('../helpers/log');
+var { deletePhoto }  = require('../helpers/utils');
 
-function ProductService (){}
+function ProductService() { }
 ProductService.getAll = (success, error) => {
   console.log('Getting all products');
 
@@ -89,53 +90,71 @@ ProductService.search = (query, success, error) => {
 
 ProductService.update = (id, product, photo_url, success, error) => {
   let photo_url_new = photo_url;
+  let del = false;
 
-  if (product.photo_url && !photo_url) {
-    photo_url_new = product.photo_url;
+  if (photo_url != product.photo_url) {
+    del = true;
   }
 
-  db.query(`UPDATE products p
-      SET p.name = :name,
-        p.description = :description,
-        p.manufacturer = :manufacturer,
-        p.quantity = :quantity,
-        p.photo_url = :photo_url,
-        p.price = :price
-      WHERE p.id = :id`,
-    {
-      replacements: {
-        id: id,
-        name: product.name,
-        description: product.description,
-        manufacturer: product.manufacturer,
-        quantity: product.quantity,
-        photo_url: photo_url_new,
-        price: product.price
-      },
-      type: Sequelize.QueryTypes.UPDATE
+  if (!photo_url) {
+    del = true;
+    if (product.photo_url) {
+      photo_url_new = product.photo_url;
     }
-  ).then( (result) => {
-    console.log(`\n${result}#${product.name} has been updated!`);
-    Log.save('ALTER', 'PRODUCT', product.name);
-    success(`${result}#${product.name} has been updated!`);
-  }).catch(err => {
+  }
+
+  deletePhoto(id, (result) => {
+    db.query(`UPDATE products p
+        SET p.name = :name,
+          p.description = :description,
+          p.manufacturer = :manufacturer,
+          p.quantity = :quantity,
+          p.photo_url = :photo_url,
+          p.price = :price
+        WHERE p.id = :id`,
+      {
+        replacements: {
+          id: id,
+          name: product.name,
+          description: product.description,
+          manufacturer: product.manufacturer,
+          quantity: product.quantity,
+          photo_url: photo_url_new,
+          price: product.price
+        },
+        type: Sequelize.QueryTypes.UPDATE
+      }
+    ).then( (result) => {
+      console.log(`\n${result}#${product.name} has been updated!`);
+      Log.save('ALTER', 'PRODUCT', product.name);
+      success(`${result}#${product.name} has been updated!`);
+    }).catch(err => {
+      console.error(err);
+      error(err);
+    });
+  }, (err) => {
+    console.log('error on retrieving product');
     console.error(err);
-    error(err);
-  })
+  }, del, 'products');
 }
 
 ProductService.remove = (id, success, error) => {
-  db.query('DELETE FROM products WHERE id = :id ', {
-    replacements: { id: id },
-    type: Sequelize.QueryTypes.DELETE
-  }).then( (result) => {
-    console.log('Product deleted.');
-    Log.save('DELETE', 'PRODUCT', id);
-    success(true);
-  }).catch(err => {
+  deletePhoto(id, (result) => {
+    db.query('DELETE FROM products WHERE id = :id ', {
+      replacements: { id: id },
+      type: Sequelize.QueryTypes.DELETE
+    }).then( (result) => {
+      console.log('Product deleted.');
+      Log.save('DELETE', 'PRODUCT', id);
+      success(true);
+    }).catch(err => {
+      console.error(err);
+      error(err);
+    });
+  }, (err) => {
+    console.log('error on retrieving product');
     console.error(err);
-    error(err);
-  })
+  }, true, 'products');
 }
 
 module.exports = { ProductService }

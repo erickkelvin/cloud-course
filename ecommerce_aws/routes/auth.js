@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var { authenticate } = require('../services/auth');
 var { UserService } = require('../services/users');
-var { upload }  = require('../helpers/utils');
+var { uploadPhoto }  = require('../helpers/utils');
 
 /* GET login page. */
 router.get('/user/login', function(req, res, next) {
@@ -45,7 +45,7 @@ router.get('/user/edit', function(req, res, next) {
 });
 
 /* POST create user */
-router.post('/user/create', upload.single('photo'), function(req, res, next) {
+router.post('/user/create', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.create(req.body, file, (user) => {
     res.redirect('/user/login');
@@ -55,7 +55,7 @@ router.post('/user/create', upload.single('photo'), function(req, res, next) {
   });
 });
 
-router.post('/user/update', upload.single('photo'), function(req, res, next) {
+router.post('/user/update', uploadPhoto.single('photo'), function(req, res, next) {
   if(!req.session.user) {
     res.redirect('/user/login');
   }
