@@ -1,2 +1,27 @@
-# cloud-ecommerce-project
-First project for the Cloud Development course at UFC.
+# Cloud Course
+Repository containing projects for the cloud course at UFC, using Amazon Web Services and Google Cloud Platform.
+
+
+## AWS Project
+
+### Setup
+
+1. Configure the following AWS credentials using environment variables:
+   * AWS_ACCESS_KEY_ID
+   * AWS_SECRET_ACCESS_KEY
+   * S3_BUCKET
+
+2. Clone the repository and then run in the terminal:  
+    ```bash
+    cd ecommerce_aws 
+    npm install
+    ```
+    
+### Run
+1. In the terminal, type:
+
+    ```bash
+    npm start
+    ```
+    
+2. Open `http://localhost:3000` in your browser.
