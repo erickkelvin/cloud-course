@@ -1,9 +1,12 @@
 var AWS = require('aws-sdk');
 var multer = require('multer')
 var multerS3 = require('multer-s3')
+AWS.config.update({
+  region:'us-east-1'
+})
 
-AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY });
 const s3 = new AWS.S3();
+const ses = new AWS.SES();
 
 var upload = multer({
   storage: multerS3({
@@ -19,4 +22,43 @@ var upload = multer({
   })
 });
 
-module.exports = { upload }
+sendEmail = (items, client) => {
+
+  var body = `
+    <h2>Registrando sua compra ${client.name}</h2>
+    ${JSON.stringify(items)}
+    <p>Obrigado!</p>
+  `;
+
+  var params = {
+    Destination: { /* required */
+      CcAddresses: [],
+      ToAddresses: [client.email]
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: body
+        }
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: 'Nova compra no Smart'
+      }
+    },
+    Source: 'zedequiassantoss@gmail.com',
+  };
+
+  console.log('####### SENDING EMAIL #######');
+
+  // Create the promise and SES service object
+  // var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+  ses.sendEmail(params).then((data) => {
+    // console.log(data.MessageId, data);
+  }).catch((err) => {
+    // console.error(err, err.stack);
+  })
+}
+
+module.exports = { upload, sendEmail }
