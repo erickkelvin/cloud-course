@@ -12,7 +12,7 @@ Log.save = function(login, action, object, objectId = null) {
             user: login,
             action: action,
             object: String(object),
-            date: new Date()
+            date: formatDate(new Date())
         }
     }
     if(objectId) {
@@ -23,9 +23,9 @@ Log.save = function(login, action, object, objectId = null) {
         if(err) { console.log(err); }
         else {
             if (objectId) {
-                console.log(`${id} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
+                console.log(`${login} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
             } else {
-                console.log(`${id} - ${action} - ${object} - ${formatDate(new Date())}`);
+                console.log(`${login} - ${action} - ${object} - ${formatDate(new Date())}`);
             }
         }
     }).promise();
@@ -39,6 +39,8 @@ function formatDate(date) {
   var hour = date.getHours();
   var minute = date.getMinutes();
   var seconds = date.getSeconds();
+  var milli = date.getMilliseconds();
+
   if(day < 10) {
       day = '0' + day;
   }
@@ -55,7 +57,7 @@ function formatDate(date) {
       seconds = '0' + seconds;
   }
 
-  return day+'/'+month+'/'+year +' '+hour+':'+minute+':'+seconds;
+  return day+'/'+month+'/'+year +' '+hour+':'+minute+':'+seconds+':'+milli;
 }
 
 module.exports = Log;
