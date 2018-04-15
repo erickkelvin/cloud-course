@@ -3,6 +3,7 @@ var router = express.Router();
 var { authenticate } = require('../services/auth');
 var { UserService } = require('../services/users');
 var { uploadPhoto }  = require('../helpers/utils');
+var Log = require('../helpers/log');
 
 /* GET login page. */
 router.get('/user/login', function(req, res, next) {
@@ -62,11 +63,10 @@ router.post('/user/update', uploadPhoto.single('photo'), function(req, res, next
   }
   const file = req.file ? req.file.location : '';
   UserService.update(req.session.user.id, req.body, file, (user) => {
-    console.log(req.session.user.id, user.id);
     if (req.session.user.id == user.id) {
       req.session.user = user;
     }
-    Log.save(req.session.user.login, 'ALTER', 'USER', req.params.login);
+    Log.save(req.session.user.login, 'ALTER', 'USER', user.login);
     res.redirect('/');
   }, (err) => {
     console.log('error on update');

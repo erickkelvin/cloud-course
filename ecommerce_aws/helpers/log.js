@@ -1,7 +1,6 @@
 var AWS = require('aws-sdk');
-AWS.config.update({
-    region:'us-east-2'
-})
+AWS.config.update({ region: process.env.AWS_DEFAULT_REGION });
+
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 function Log(){}
@@ -28,7 +27,7 @@ Log.save = function(login, action, object, objectId = null) {
                 console.log(`${login} - ${action} - ${object} - ${formatDate(new Date())}`);
             }
         }
-    }).promise();
+    });
 }
 
 function formatDate(date) {

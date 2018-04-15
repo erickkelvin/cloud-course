@@ -58,13 +58,11 @@ router.get('/edit/:id', function(req, res, next) {
 router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.location : '';
   UserService.update(req.params.id, req.body, file, (user) => {
-    Log.save(req.session.user.login, 'ALTER', 'USER', req.params.login);
-
     if (req.session.user.login == user.id) {
       req.session.user = user;
     }
+    Log.save(req.session.user.login, 'ALTER', 'USER', user.login);
     res.redirect('/admin/users');
-    
   }, (err) => {
     console.log('error on update');
     console.error(err);
@@ -73,9 +71,8 @@ router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next)
 
 /* GET delete user */
 router.get('/delete/:id', function(req, res, next) {
-  UserService.remove(req.params.id, (result) => {
-    Log.save(req.session.user.login, 'DELETE', 'USER', req.params.login);
-
+  UserService.remove(req.params.id, (user) => {
+    Log.save(req.session.user.login, 'DELETE', 'USER', user.login);
     res.redirect('/admin/users');
   }, (err) => {
     console.log('error on delete');
@@ -85,13 +82,12 @@ router.get('/delete/:id', function(req, res, next) {
 
 /* GET user page */
 router.get('/:id', (req, res) => {
-  UserService.get(id, (result) => {
-    Log.save(req.session.user.login, 'VIEW', 'USER', id);
-
-    res.redirect('/show', { user: result });
+  UserService.get(req.params.id, (user) => {
+    Log.save(req.session.user.login, 'VIEW', 'USER', user.login);
+    res.render('./admin/users/show', { title: user.name, user: user, session: req.session });
   }, (error) => {
     console.log(error);
-    res.redirect('/users');
+    res.redirect('/admin/users');
   });
 
 });

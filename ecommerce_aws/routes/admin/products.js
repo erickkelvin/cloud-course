@@ -68,8 +68,8 @@ router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next)
 
 /* GET delete product */
 router.get('/delete/:id', function(req, res, next) {
-  ProductService.remove(req.params.id, (result) => {
-    Log.save(req.session.user.login, 'DELETE', 'PRODUCT', req.params.id);
+  ProductService.remove(req.params.id, (product) => {
+    Log.save(req.session.user.login, 'DELETE', 'PRODUCT', product.name);
     res.redirect('/admin/products');
   }, (err) => {
     console.log('error on delete');
@@ -79,12 +79,12 @@ router.get('/delete/:id', function(req, res, next) {
 
 /* GET product page */
 router.get('/:id', (req, res) => {
-  ProductService.get(id, (result) => {
-    Log.save(req.session.user.login, 'VIEW', 'PRODUCT', result.name);
-    res.redirect('/show', { product: result });
+  ProductService.get(req.params.id, (product) => {
+    Log.save(req.session.user.login, 'VIEW', 'PRODUCT', product.name);
+    res.render('./admin/products/show', { title: product.name, product: product, session: req.session });
   }, (error) => {
     console.log(error);
-    res.redirect('/products');
+    res.redirect('/admin/products');
   });
 
 });

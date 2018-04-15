@@ -10,7 +10,7 @@ $(document).ready(function() {
   });
 
   $(".crud-form #photo-container #photo-button").click(function() {
-    $("input#photo_url").val("");
+    $("input#photo_url").val("del");
     $("#users-form #photo-container img").attr("src","/images/default-user.png");
     $("#auth-form #photo-container img").attr("src","/images/default-user.png");
     $("#products-form #photo-container img").attr("src","/images/default-product.png");

@@ -95,15 +95,12 @@ UserService.update = (id, user, photo_url, success, error) => {
   let photo_url_new = photo_url;
   let del = false;
 
-  if (photo_url_new != user.photo_url) {
+  if ((photo_url_new && user.photo_url) || user.photo_url == 'del') {
     del = true;
   }
 
-  if (!photo_url_new) {
-    del = true;
-    if (user.photo_url) {
-      photo_url_new = user.photo_url;
-    }
+  if (!photo_url && user.photo_url && user.photo_url != 'del') {
+    photo_url_new = user.photo_url;
   }
   
   deletePhoto(id, (result) => {
@@ -134,6 +131,7 @@ UserService.update = (id, user, photo_url, success, error) => {
       let user_new = user;
       user_new.photo_url = photo_url_new;
       user_new.id = id;
+      user_new.login = user.login_alt;
       success(user_new);
     }).catch(err => {
       console.error(err);
@@ -146,13 +144,12 @@ UserService.update = (id, user, photo_url, success, error) => {
 }
 
 UserService.remove = (id, success, error) => {
-  deletePhoto(id, (result) => {
+  deletePhoto(id, (user) => {
     db.query('DELETE FROM users WHERE id = :id ', {
       replacements: { id: id },
       type: Sequelize.QueryTypes.DELETE
     }).then(result => {
-      console.log('User deleted.');
-      success(true);
+      success(user);
     }).catch(err => {
       console.error(err);
       error(err);

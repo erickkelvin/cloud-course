@@ -21,26 +21,29 @@ var uploadPhoto = multer({
 });
 
 deletePhoto = (id, success, error, del, serviceType) => {
-  console.log(del, id, serviceType);
   if (del) {
     const { UserService } = require('../services/users');
     const { ProductService } = require('../services/products');
     let Service;
     if (serviceType === 'users') {
-      console.log(del, id, serviceType);
       Service = UserService;
     }
     else if (serviceType === 'products') {
       Service = ProductService;
     }
     Service.get(id, (result) => {
-      const photoKey = result.photo_url.substr(result.photo_url.lastIndexOf('/') + 1);
-      s3.deleteObject({Key: photoKey}, (err, data) => {
-        if (err) {
-          error(err);
-        }
-        success('Successfully deleted photo.');
-      });
+      if (result.photo_url) {
+        const photoKey = result.photo_url.substr(result.photo_url.lastIndexOf('/') + 1);
+        s3.deleteObject({Key: photoKey}, (err, data) => {
+          if (err) {
+            error(err);
+          }
+          success(result);
+        });
+      }
+      else {
+        success(result);
+      }
     }, (err) => {
       console.log('error on retrieving object');
       console.error(err);

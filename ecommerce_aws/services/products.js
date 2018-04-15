@@ -88,15 +88,12 @@ ProductService.update = (id, product, photo_url, success, error) => {
   let photo_url_new = photo_url;
   let del = false;
 
-  if (photo_url != product.photo_url) {
+  if ((photo_url_new && product.photo_url) || product.photo_url == 'del') {
     del = true;
   }
 
-  if (!photo_url) {
-    del = true;
-    if (product.photo_url) {
-      photo_url_new = product.photo_url;
-    }
+  if (!photo_url && product.photo_url && product.photo_url != 'del') {
+    photo_url_new = product.photo_url;
   }
 
   deletePhoto(id, (result) => {
@@ -134,13 +131,13 @@ ProductService.update = (id, product, photo_url, success, error) => {
 }
 
 ProductService.remove = (id, success, error) => {
-  deletePhoto(id, (result) => {
+  deletePhoto(id, (product) => {
     db.query('DELETE FROM products WHERE id = :id ', {
       replacements: { id: id },
       type: Sequelize.QueryTypes.DELETE
-    }).then( (result) => {
+    }).then(result => {
       console.log('Product deleted.');
-      success(true);
+      success(product);
     }).catch(err => {
       console.error(err);
       error(err);
