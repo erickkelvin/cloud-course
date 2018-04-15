@@ -260,12 +260,26 @@ table.crud-table {
   width: 13%;
 }
 
+.crud-info-show strong {
+  display: block;
+  margin-top: 10px;
+}
+
 .user-photo {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   float:left;
   margin-right: 15px;
+}
+
+.user-photo-show {
+  width: 130px;
+  height: 130px;
+  float:left;
+  border-radius: 50%;
+  margin-right: 15px;
+  margin-bottom: 250px;
 }
 
 .user-name {
@@ -283,6 +297,13 @@ table.crud-table {
   color: #979797;
 }
 
+.name-show {
+  padding-top: 5px;
+  margin-bottom: 25px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .products-table td div {
   margin-bottom: 2px;
 }
@@ -295,6 +316,14 @@ table.crud-table {
   margin: 2px 12px 2px 2px;
 }
 
+.product-photo-show {
+  width: 130px;
+  height: 130px;
+  border-radius: 4px;
+  float:left;
+  margin: 2px 12px 320px 2px;
+}
+
 .product-name {
   font-size: 15px;
   font-weight: bold;
@@ -303,6 +332,9 @@ table.crud-table {
 .product-description {
   color: #979797;
   padding-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .crud-action {

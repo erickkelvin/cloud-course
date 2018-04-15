@@ -29,6 +29,7 @@
           <th>Detalhes dos produtos</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
         <% products.forEach(function(product){ %>
           <tr class="crud-row">
@@ -39,7 +40,7 @@
                 <%= product.name %>
               </div>
               <div class='product-description'>
-                <%= product.description ? product.description : 'Sem descrição' %>
+                <%= product.description %>
               </div>
               <div class='product-manufacturer'>
                 Fabricante: <%= product.manufacturer %>
@@ -50,6 +51,9 @@
               <div class='product-price'>
                 Preço: R$ <%= product.price %>
               </div>
+            </td>
+            <td class='crud-action'>
+              <a href='/admin/products/<%= product.id %>'><i class='fa fa-eye'></i> Ver</a>
             </td>
             <td class='crud-action'>
               <a href='/admin/products/edit/<%= product.id %>'><i class='fa fa-edit'></i> Editar</a>

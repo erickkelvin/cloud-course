@@ -2,6 +2,11 @@
   <div class='content crud-form' id='products-form'>
     <h1>
       <%= title %>
+      <% if (product.name) { %>
+        <a class='crud-button crud-index' href='/admin/products/<%= product.id %>'>
+          <i class='fa fa-eye'></i> Ver detalhes do produto
+        </a>
+      <% } %>
       <a class='crud-button crud-index' href='/admin/products'>
         <i class='fa fa-archive'></i> Ver todos os produtos
       </a>
@@ -9,11 +14,11 @@
     <form action="/admin/products/<%= action %>" method="POST" enctype="multipart/form-data">
       <label for="name">
         Nome:
-        <input type="text" id="name" name="name" value="<%= product.name %>" required/>
+        <input type="text" id="name" name="name" value="<%= product.name %>" maxlength="90" required/>
       </label>
       <label for="description">
         Descrição:
-        <input type="text" id="description" name="description" value="<%= product.description %>" required/>
+        <input type="text" id="description" name="description" value="<%= product.description %>" maxlength="900" required/>
       </label>
       <label for="manufacturer">
         Fabricante:

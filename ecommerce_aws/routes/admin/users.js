@@ -84,7 +84,7 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/:id', (req, res) => {
   UserService.get(req.params.id, (user) => {
     Log.save(req.session.user.login, 'VIEW', 'USER', user.login);
-    res.render('./admin/users/show', { title: user.name, user: user, session: req.session });
+    res.render('./admin/users/show', { title: 'Detalhes do usuário', user: user, session: req.session });
   }, (error) => {
     console.log(error);
     res.redirect('/admin/users');

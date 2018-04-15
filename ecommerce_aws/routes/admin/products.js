@@ -81,7 +81,7 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/:id', (req, res) => {
   ProductService.get(req.params.id, (product) => {
     Log.save(req.session.user.login, 'VIEW', 'PRODUCT', product.name);
-    res.render('./admin/products/show', { title: product.name, product: product, session: req.session });
+    res.render('./admin/products/show', { title: 'Detalhes do produto', product: product, session: req.session });
   }, (error) => {
     console.log(error);
     res.redirect('/admin/products');

@@ -2,6 +2,11 @@
   <div class='content crud-form' id='users-form'>
     <h1>
       <%= title %>
+      <% if (user.login) { %>
+        <a class='crud-button crud-index' href='/admin/users/<%= user.id %>'>
+          <i class='fa fa-eye'></i> Ver detalhes do usuário
+        </a>
+      <% } %>
       <a class='crud-button crud-index' href='/admin/users'>
         <i class='fa fa-users'></i> Ver todos os usuários
       </a>
@@ -9,19 +14,19 @@
     <form action="/admin/users/<%= action %>" method="POST" enctype="multipart/form-data">
       <label for="login">
         Login:
-        <input type="text" id="login" name="login" value="<%= user.login %>" required <%= action.includes('update') ? 'disabled' : '' %>/>
+        <input type="text" id="login" name="login" value="<%= user.login %>" maxlength="16" required <%= action.includes('update') ? 'disabled' : '' %>/>
       </label>
       <label for="password">
         Senha:
-        <input type="password" id="password" name="password" value="<%= user.password %>" required/>
+        <input type="password" id="password" name="password" value="<%= user.password %>" maxlength="20" required/>
       </label>
       <label for="name">
         Nome:
-        <input type="text" id="name" name="name" value="<%= user.name %>" required/>
+        <input type="text" id="name" name="name" value="<%= user.name %>" maxlength="50" required/>
       </label>
       <label for="email">
         E-mail:
-        <input type="email" id="email" name="email" value="<%= user.email %>" required/>
+        <input type="email" id="email" name="email" value="<%= user.email %>" maxlength="50" required/>
       </label>
       <label for="birthdate">
         Data de nascimento:

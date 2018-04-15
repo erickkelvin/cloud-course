@@ -29,6 +29,7 @@
           <th>Detalhes dos usuários</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
         <% users.forEach(function(user){ %>
           <tr class="crud-row">
@@ -42,6 +43,9 @@
               <div class="user-email">E-mail: <%= user.email %></div>
               <div class="user-birthdate">Data de nascimento: <%= user.birthdate %></div>
               <div class="user-phone">Telefone: <%= user.phone %></div>
+            </td>
+            <td class='crud-action'>
+              <a href='/admin/users/<%= user.id %>'><i class='fa fa-eye'></i> Ver</a>
             </td>
             <td class='crud-action'>
               <a href='/admin/users/edit/<%= user.id %>'><i class='fa fa-edit'></i> Editar</a>
