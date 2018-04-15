@@ -13,6 +13,7 @@ var admin = require('./routes/admin/index');
 var users = require('./routes/admin/users');
 var products = require('./routes/admin/products');
 var logs = require('./routes/admin/logs');
+var cart = require('./routes/cart');
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use('/admin', admin);
 app.use('/admin/users', users);
 app.use('/admin/products', products);
 app.use('/admin/logs', logs);
+app.use('/cart', cart);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
