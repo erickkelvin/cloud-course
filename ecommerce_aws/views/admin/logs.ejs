@@ -1,0 +1,12 @@
+<% include ../header %>
+  <div class='content' id='logs-index'>
+    <h1>
+      <a href='/admin/logs' class='title-link'><%= title %></a>
+      <a href='/admin' class='parent-link'>« Voltar ao painel</a>
+    </h1>
+    <div class='logs-box'>
+      <% logs.forEach(function(log){ %>
+        <div><%= `${log.user} ${log.action} ${log.object} ${log.objectId || ''} ${log.date}` %></div>
+      <% }); %>
+    </div>
+<% include ../footer %>

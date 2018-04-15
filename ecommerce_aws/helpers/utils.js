@@ -4,7 +4,6 @@ var multerS3 = require('multer-s3');
 var path = require('path');
 
 const s3 = new AWS.S3({params: {Bucket: process.env.S3_BUCKET}});
-const ses = new AWS.SES();
 
 var uploadPhoto = multer({
   storage: multerS3({
@@ -56,6 +55,8 @@ deletePhoto = (id, success, error, del, serviceType) => {
 }
 
 sendEmail = (items, client, callback) => {
+  //AWS.config.update({region: process.env.SES_REGION});
+  const ses = new AWS.SES();
 
   var itemsList = '';
   var total = 0;
@@ -68,8 +69,8 @@ sendEmail = (items, client, callback) => {
       <h4>${item.product.name}</h4>
       <p>${item.product.description}</p>
       <p>Quantidade: ${item.quantity}</p>
-      <p>Valor unitário: ${item.product.price}</p>
-      <p>Valor total: ${item.product.price * item.quantity}</p>
+      <p>Valor unitário: R$ ${item.product.price}</p>
+      <p>Valor total: R$ ${item.product.price * item.quantity}</p>
     </li>
     `;
 
@@ -78,7 +79,7 @@ sendEmail = (items, client, callback) => {
 
   var body = `
   <h3>
-	  Olá ${client.name}
+	  Olá ${client.name}!
   </h3>
   <p>Você realizou uma nova compra no <b style="color:#DB7D25">SmartVendas!</b></p>
   <p>Sua compra foi realizada no dia ${date}, contendo os seguintes itens:</p>
@@ -109,7 +110,7 @@ sendEmail = (items, client, callback) => {
         Data: 'Nova compra no SmartVendas'
       }
     },
-    Source: 'zedequiassantoss@gmail.com',
+    Source: process.env.SES_EMAIL,
   };
 
   console.log(`Sending email to ${client.email}`);

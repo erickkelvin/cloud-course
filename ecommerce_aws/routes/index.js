@@ -14,12 +14,22 @@ router.get('/', function(req, res, next) {
 
 /* GET sale page. */
 router.get('/sale', function(req, res, next) {
-  res.render('sale', { title: 'Promoções', session: req.session });
+  ProductService.getAll((result) => {
+    res.render('index', { title: 'Promoções', products: result, session: req.session });
+  }, (err) => {
+    console.log('error on getAll');
+    console.error(err);
+  });
 });
 
 /* GET products page. */
 router.get('/products', function(req, res, next) {
-  res.render('products', { title: 'Produtos', session: req.session });
+  ProductService.getAll((result) => {
+    res.render('index', { title: 'Produtos', products: result, session: req.session });
+  }, (err) => {
+    console.log('error on getAll');
+    console.error(err);
+  });
 });
 
 module.exports = router;
