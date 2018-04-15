@@ -30,6 +30,15 @@ Log.save = function(login, action, object, objectId = null) {
     });
 }
 
+Log.getAll = function(success, error) {
+
+    var params = { TableName: 'Log' };
+    dynamodb.scan(params, (err, data) => {
+        if(err) { console.log(err); error(err); }
+        else { success(data.Items); }
+    })
+}
+
 function formatDate(date) {
   
   var day = date.getDate();

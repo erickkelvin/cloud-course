@@ -55,16 +55,45 @@ deletePhoto = (id, success, error, del, serviceType) => {
   }
 }
 
-sendEmail = (items, client) => {
+sendEmail = (items, client, callback) => {
+
+  var itemsList = '';
+  var total = 0;
+  var date = new Date();
+  date = `${date.getDate()}/${date.getMonth()}`;
+
+  items.forEach((item) => {
+    itemsList += `
+    <li>
+      <h4>${item.product.name}</h4>
+      <p>${item.product.description}</p>
+      <p>Quantidade: ${item.quantity}</p>
+      <p>Valor unitário: ${item.product.price}</p>
+      <p>Valor total: ${item.product.price * item.quantity}</p>
+    </li>
+    `;
+
+    total += (item.quantity * item.product.price);
+  });
 
   var body = `
-    <h2>Registrando sua compra ${client.name}</h2>
-    ${JSON.stringify(items)}
-    <p>Obrigado!</p>
-  `;
+  <h3>
+	  Olá ${client.name}
+  </h3>
+  <p>Você realizou uma nova compra no <b style="color:#DB7D25">SmartVendas!</b></p>
+  <p>Sua compra foi realizada no dia ${date}, contendo os seguintes itens:</p>
+
+  <ul>
+    ${itemsList}
+  </ul>
+
+  <p>Compra no valor total de ${total} reais.</p>
+
+  <b>Obrigado!</b>
+  `
 
   var params = {
-    Destination: { /* required */
+    Destination: {
       CcAddresses: [],
       ToAddresses: [client.email]
     },
@@ -77,21 +106,23 @@ sendEmail = (items, client) => {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: 'Nova compra no Smart'
+        Data: 'Nova compra no SmartVendas'
       }
     },
     Source: 'zedequiassantoss@gmail.com',
   };
 
-  console.log('####### SENDING EMAIL #######');
-
-  // Create the promise and SES service object
-  // var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-  ses.sendEmail(params).then((data) => {
-    // console.log(data.MessageId, data);
-  }).catch((err) => {
-    // console.error(err, err.stack);
-  })
+  console.log(`Sending email to ${client.email}`);
+  ses.sendEmail(params, (err, data) => {
+    if(err) {
+      console.log('Error sending the email')
+      console.log(err);
+      callback(err, null);
+    } else {
+      console.log(`MessageId: ${data.MessageId}`);
+      callback(null, data.MessageId);
+    }
+  });
 }
 
 module.exports = { uploadPhoto, deletePhoto, sendEmail }
