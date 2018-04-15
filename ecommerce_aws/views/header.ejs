@@ -18,6 +18,9 @@
       <span>SmartVendas</span>
     </a>
     <div id='user'>
+      <div class='user-menu' style='float:left;'>
+        <a href='/cart'><i class='fa fa-shopping-cart'></i> Carrinho (<%= session.cart ? session.cart.length : 0 %>)</a>
+      </div>
       <% if (session.user) { %>
         <div class='user-logged-in'>
           <div id='popup-parent'>

@@ -4,6 +4,7 @@ var multerS3 = require('multer-s3');
 var path = require('path');
 
 const s3 = new AWS.S3({params: {Bucket: process.env.S3_BUCKET}});
+const ses = new AWS.SES({ region: process.env.SES_REGION });
 
 var uploadPhoto = multer({
   storage: multerS3({
@@ -55,9 +56,6 @@ deletePhoto = (id, success, error, del, serviceType) => {
 }
 
 sendEmail = (items, client, callback) => {
-  //AWS.config.update({region: process.env.SES_REGION});
-  const ses = new AWS.SES();
-
   var itemsList = '';
   var total = 0;
   var date = new Date();
@@ -70,7 +68,7 @@ sendEmail = (items, client, callback) => {
       <p>${item.product.description}</p>
       <p>Quantidade: ${item.quantity}</p>
       <p>Valor unitário: R$ ${item.product.price}</p>
-      <p>Valor total: R$ ${item.product.price * item.quantity}</p>
+      <p>Subtotal: R$ ${(item.product.price * item.quantity).toFixed(2)}</p>
     </li>
     `;
 
@@ -87,8 +85,10 @@ sendEmail = (items, client, callback) => {
   <ul>
     ${itemsList}
   </ul>
-
-  <p>Compra no valor total de ${total} reais.</p>
+  <br>
+  <p>
+    <strong>TOTAL: </strong> R$ ${total.toFixed(2)}
+  </p>
 
   <b>Obrigado!</b>
   `
@@ -116,12 +116,24 @@ sendEmail = (items, client, callback) => {
   console.log(`Sending email to ${client.email}`);
   ses.sendEmail(params, (err, data) => {
     if(err) {
-      console.log('Error sending the email')
-      console.log(err);
-      callback(err, null);
+      console.log('Error sending the email');
+      if (err.message.includes('Email address is not verified.')) {
+        ses.verifyEmailAddress({ EmailAddress: client.email }, function (err, data) {
+          if (err) {
+            return callback(err, null);
+          }
+          else {
+            console.log('Verification e-mail sent!');
+            return callback(err, 'Needs verification.');
+          }
+        });
+      }
+      else {
+        return callback(err, null);
+      }
     } else {
       console.log(`MessageId: ${data.MessageId}`);
-      callback(null, data.MessageId);
+      return callback(null, data.MessageId);
     }
   });
 }

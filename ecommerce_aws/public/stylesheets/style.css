@@ -92,7 +92,7 @@ body {
   display: inline;
 }
 
-#main-menu div a {
+#main-menu div a, #checkout a {
   text-decoration: none;
   color: var(--primary-color);
 }
@@ -112,9 +112,9 @@ div#login {
 }
 
 div#login .login-message {
-  background-color: #d47676;
-  color: #fff;
-  border: 1px solid #ac3a3a;
+  background-color: #f3aeae;
+  color: #a82626;
+  border: 1px solid #c28282;
   border-radius: 5px;
   padding: 6px;
   font-size: 12px;
@@ -646,4 +646,13 @@ img {
   border-radius: 4px;
   height: 400px;
   overflow-y:scroll;
+}
+
+.cart-message {
+  background-color: #ffeaa6;
+  color: #8d7423;
+  border: 1px solid #c9b163;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 20px 0px;
 }

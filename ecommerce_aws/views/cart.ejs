@@ -1,0 +1,50 @@
+<% include header %>
+  <div class='content' id='cart'>
+    <h1><%= title %></h1>
+    <% if (message) { %>
+      <div class='cart-message'>
+        <i class="fa fa-exclamation-circle"></i> <%= message %>
+      </div>
+    <% } %>
+    <% if (session.cart && session.cart.length) { %>
+      <table class='crud-table products-table'>
+        <tr>
+          <th>Itens</th>
+          <th>Quantidade</th>
+        </tr>
+        <% session.cart.forEach(function(item){ %>
+          <tr class="crud-row">
+            <td class='crud-info'>
+              <img class='product-photo' src="<%= item.product.photo_url || '/images/default-product.png' %>" />
+              <div class='product-name'>
+                <%= item.product.name %>
+              </div>
+              <div class='product-description'>
+                <%= item.product.description %>
+              </div>
+              <div class='product-manufacturer'>
+                Fabricante: <%= item.product.manufacturer %>
+              </div>
+              <div class='product-quantity'>
+                Quantidade: <%= item.product.quantity %>
+              </div>
+              <div class='product-price'>
+                Preço: R$ <%= item.product.price %>
+              </div>
+            </td>
+            <td class='crud-action'>
+              <a href='/cart/add/<%= item.product.id %>'><i class='fa fa-plus'></i></a>
+              <%= item.quantity %>
+              <a href='/cart/delete/<%= item.product.id %>'><i class='fa fa-minus'></i></a>
+            </td>
+          </tr>
+        <% }) %>
+      </table>
+      <form action='/cart/checkout' method='POST'>
+        <input type='submit' value='Finalizar compra' />
+      </form>
+    <% } else { %>
+      Carrinho vazio.
+    <% } %>
+  </div>
+<% include footer %>

@@ -36,4 +36,8 @@ $(document).ready(function() {
 
   setTimeout(() => $(".login-message").fadeOut(500), 3000);
 
+  $(".product-form").click(function(e) {
+    $(this).submit();
+    e.preventDefault();
+  });
 });

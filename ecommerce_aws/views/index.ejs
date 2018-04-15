@@ -1,12 +1,15 @@
 <% include header %>
   <div class='content' id='index'>
     <% products.forEach(function(product){ %>
-      <div class='product-box'>
-        <img class='product-img' src="<%= product.photo_url || '/images/default-product.png' %>">
-        <div class='product-title'><%= product.name %></div>
-        <div class='product-price'>R$ <%= product.price %></div>
-        <div class='product-price-alt'>10x de <%= (product.price / 10).toFixed(2) %> sem juros</div>
-      </div>
+      <form action='/cart/add/<%= product.id%>' method='POST' class='product-form'>
+        <div class='product-box'>
+          <img class='product-img' src="<%= product.photo_url || '/images/default-product.png' %>">
+          <div class='product-title'><%= product.name %></div>
+          <div class='product-price'>R$ <%= product.price %></div>
+          <div class='product-price-alt'>10x de <%= (product.price / 10).toFixed(2) %> sem juros</div>
+        </div>
+        <input type='hidden' id='product' name='product' value='<%= JSON.stringify(product) %>'>
+      </form>
     <% }); %>
   </div>
 <% include footer %>
