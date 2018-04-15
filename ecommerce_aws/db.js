@@ -1,18 +1,16 @@
 var Sequelize = require('sequelize');
-var config = require('./config.json')[process.env.NODE_ENV];
-// console.log('Configurations\n', config);
 
 var db = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
   {
-    port: config.port,
+    port: process.env.DB_PORT,
     logging: console.log,
-    host: config.host,
-    dialect: config.dialect,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
     operatorsAliases: Sequelize.Op
   }
 );
 
-module.exports = { db } ;
+module.exports = { db };
