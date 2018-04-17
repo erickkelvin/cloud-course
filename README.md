@@ -6,9 +6,10 @@ Repository containing projects for the cloud course at UFC, using Amazon Web Ser
 
 ### Setup
 
-1. Configure the following AWS credentials using environment variables:
+1. Set the following environment variables:
    * AWS_ACCESS_KEY_ID
    * AWS_SECRET_ACCESS_KEY
+   * AWS_DEFAUT_REGION
    * S3_BUCKET
    * DB_HOST
    * DB_NAME
