@@ -1,0 +1,48 @@
+<% include ../header %>
+  <div class='content crud-form' id='auth-form'>
+    <h1>
+      <%= title %>
+    </h1>
+    <form action="/user/<%= action %>" method="POST" enctype="multipart/form-data">
+      <label for="login">
+        Login:
+        <input type="text" id="login" name="login" value="<%= user.login %>" maxlength="16" required <%= action.includes('update') ? 'disabled' : '' %>/>
+      </label>
+      <label for="password">
+        Senha:
+        <input type="password" id="password" name="password" value="<%= user.password %>" maxlength="20" required/>
+      </label>
+      <label for="name">
+        Nome:
+        <input type="text" id="name" name="name" value="<%= user.name %>" maxlength="50" required/>
+      </label>
+      <label for="email">
+        E-mail:
+        <input type="email" id="email" name="email" value="<%= user.email %>" maxlength="50" required/>
+      </label>
+      <label for="birthdate">
+        Data de nascimento:
+        <input type="date" id="birthdate" name="birthdate" value="<%= user.birthdate %>" max="<%= new Date().toJSON().slice(0,10) %>" required />
+      </label>
+      <label for="phone">
+        Telefone:
+        <input type="tel" id="phone" name="phone" value="<%= user.phone %>" maxlength="15" required />
+      </label>
+      Foto:
+      <div id="photo-container">
+        <div id="photo-button" class="<%= user.photo_url ? 'active' :'' %>">
+          <img class='user-photo' src="<%= user.photo_url || '/images/default-user.png' %>" />
+          <div class='photo-overlay'><div class="remove-photo-text"><i class='fa fa-trash'></i> remover</div></div>
+        </div> 
+        <label for="photo">
+          <input type="file" id="photo" name="photo" accept="image/*" />
+        </label>
+      </div>
+      
+      <input type="hidden" id="photo_url" name="photo_url" value="<%= user.photo_url %>" />
+      <input type="hidden" id="login_alt" name="login_alt" value="<%= user.login %>" />
+      <input type="hidden" id="type" name="type" value="<%= user.type %>" />
+      <input type="submit" value="Salvar" />
+    </form>
+  </div>
+<% include ../footer %>

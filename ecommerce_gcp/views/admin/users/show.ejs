@@ -1,0 +1,21 @@
+<% include ../../header %>
+  <div class='content' id='users-show'>
+    <h1>
+      <%= title %>
+      <a class='crud-button crud-index' href='/admin/users/edit/<%= user.id %>'>
+        <i class='fa fa-edit'></i> Editar usuário
+      </a>
+      <a class='crud-button crud-index' href='/admin/users'>
+        <i class='fa fa-users'></i> Ver todos os usuários
+      </a>
+    </h1>
+    <div class='crud-info-show'>
+      <img class='user-photo-show' src="<%= user.photo_url || '/images/default-user.png' %>" />
+      <div class='name-show'><%= user.name %></div>
+      <div class='user-login-show'><strong>Login:</strong> <%= user.login %></div>
+      <div class="user-email-show"><strong>E-mail:</strong> <%= user.email %></div>
+      <div class="user-birthdate-show"><strong>Data de nascimento:</strong> <%= user.birthdate %></div>
+      <div class="user-phone-show"><strong>Telefone:</strong> <%= user.phone %></div>
+    </div>
+  </div>
+<% include ../../footer %>

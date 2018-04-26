@@ -1,0 +1,21 @@
+<% include ../header %>
+  <div class='content' id='login'>
+    <h1>
+      <%= title %>
+    </h1>
+    <form action='/user/login' method='POST'>
+      <label class='user-login' for="login">
+        <input type='text' id="login" name="login" placeholder='Usuário' />
+        <i class='fa fa-user'></i>
+      </label>
+      <label class='user-password' for="password">
+        <input type='password' id="password" name="password" placeholder='Senha' />
+        <i class='fa fa-key'></i>
+      </label>
+      <input type='submit' value='Fazer login' />
+    </form>
+    <% if (error) { %>
+      <div class='login-message'><i class='fa fa-exclamation-circle'></i><%= error %></div>
+    <% } %>
+  </div>
+<% include ../footer %>

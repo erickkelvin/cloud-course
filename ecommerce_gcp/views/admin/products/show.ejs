@@ -1,0 +1,21 @@
+<% include ../../header %>
+  <div class='content' id='products-show'>
+    <h1>
+      <%= title %>
+      <a class='crud-button crud-index' href='/admin/products/edit/<%= product.id %>'>
+        <i class='fa fa-edit'></i> Editar produto
+      </a>
+      <a class='crud-button crud-index' href='/admin/products'>
+        <i class='fa fa-archive'></i> Ver todos os produtos
+      </a>
+    </h1>
+    <div class='crud-info-show'>
+      <img class='product-photo-show' src="<%= product.photo_url || '/images/default-product.png' %>" />
+      <div class='name-show'><%= product.name %></div>
+      <div class='product-description-show'><strong>Descrição:</strong><%= product.description %></div>
+      <div class='product-manufacturer-show'><strong>Fabricante:</strong><%= product.manufacturer %></div>
+      <div class='product-quantity-show'><strong>Quantidade:</strong><%= product.quantity %></div>
+      <div class='product-price-show'><strong>Preço:</strong> R$ <%= product.price %></div>
+    </div>
+  </div>
+<% include ../../footer %>

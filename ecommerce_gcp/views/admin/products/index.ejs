@@ -1,0 +1,71 @@
+<% include ../../header %>
+  <div class='content' id='products-index'>
+    <h1>
+      <a href='/admin/products' class='title-link'><%= title %></a>
+      <a href='/admin' class='parent-link'>« Voltar ao painel</a>
+      <div class='search-crud-input'>
+        <form action='/admin/products/' method='get'>
+          <input type='search' name='search' placeholder='Buscar produto' />
+        </form>
+        <i class='fa fa-search'></i>
+      </div>
+      <a class='crud-button crud-new' href='/admin/products/new'>
+        <i class='fa fa-plus-square'></i> Adicionar novo
+      </a>
+    </h1>
+    <% if (query) { %>
+      <div class="search-results-head">
+        <div>Resultado da busca por '<%= query %>'</div>
+        <% if (products.length > 0) { %>
+          <% const plural = products.length > 1 ? 's' : ''; %>
+          <div><%= products.length %> produto<%= plural %> encontrado<%= plural %></div>
+        <% } %>
+      </div>
+    <% } %>
+    <% if (products.length > 0) { %>
+      <table class='crud-table products-table'>
+        <tr>
+          <th class='crud-id'>#</th>
+          <th>Detalhes dos produtos</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <% products.forEach(function(product){ %>
+          <tr class="crud-row">
+            <td class='crud-id'><%= product.id %></td>
+            <td class='crud-info'>
+              <img class='product-photo' src="<%= product.photo_url || '/images/default-product.png' %>" />
+              <div class='product-name'>
+                <%= product.name %>
+              </div>
+              <div class='product-description'>
+                <%= product.description %>
+              </div>
+              <div class='product-manufacturer'>
+                Fabricante: <%= product.manufacturer %>
+              </div>
+              <div class='product-quantity'>
+                Quantidade: <%= product.quantity %>
+              </div>
+              <div class='product-price'>
+                Preço: R$ <%= product.price %>
+              </div>
+            </td>
+            <td class='crud-action'>
+              <a href='/admin/products/<%= product.id %>'><i class='fa fa-eye'></i> Ver</a>
+            </td>
+            <td class='crud-action'>
+              <a href='/admin/products/edit/<%= product.id %>'><i class='fa fa-edit'></i> Editar</a>
+            </td>
+            <td class='crud-action'>
+              <a href='/admin/products/delete/<%= product.id %>' onclick="return confirm('Esta ação removerá o produto permanentemente. Deseja continuar?');"><i class='fa fa-trash'></i> Remover</a>
+            </td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      Nenhum produto encontrado.
+    <% } %>
+  </div>
+<% include ../../footer %>
