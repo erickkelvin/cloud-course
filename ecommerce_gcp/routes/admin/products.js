@@ -34,7 +34,7 @@ router.get('/new', function(req, res, next) {
 
 /* POST create product */
 router.post('/create', uploadPhoto.single('photo'), function(req, res, next) {
-  const file = req.file ? req.file.location : '';
+  const file = req.file ? req.file.path : '';
   ProductService.create(req.body, file, (result) => {
     Log.save(req.session.user.login, 'INSERT', 'PRODUCT', req.body.name);
     res.redirect('/admin/products');
@@ -56,7 +56,7 @@ router.get('/edit/:id', function(req, res, next) {
 
 /* POST update product */
 router.post('/update/:id', uploadPhoto.single('photo'), function(req, res, next) {
-  const file = req.file ? req.file.location : '';
+  const file = req.file ? req.file.path : '';
   ProductService.update(req.params.id, req.body, file, (result) => {
     Log.save(req.session.user.login, 'ALTER', 'PRODUCT', req.body.name);
     res.redirect('/admin/products');

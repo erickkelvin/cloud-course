@@ -1,26 +1,14 @@
-var AWS = require('aws-sdk');
-var multer = require('multer');
-var multerS3 = require('multer-s3');
-var path = require('path');
+const Storage = require('@google-cloud/storage');
+const multer = require('multer');
+const multerGoogleStorage = require('multer-google-storage');
+const path = require('path');
 
-const s3 = new AWS.S3({params: {Bucket: process.env.S3_BUCKET}});
-const ses = new AWS.SES({ region: process.env.SES_REGION });
-
-var uploadPhoto = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.S3_BUCKET,
-    acl: 'public-read',
-    metadata: function (req, file, cb) {
-      cb(null, {fieldName: file.fieldname});
-    },
-    key: function (req, file, cb) {
-      cb(null, `${Date.now().toString()}${path.extname(file.originalname)}`);
-    }
-  })
+const uploadPhoto = multer({
+  storage: multerGoogleStorage.storageEngine()
 });
 
 deletePhoto = (id, success, error, del, serviceType) => {
+  const storage = new Storage();
   if (del) {
     const { UserService } = require('../services/users');
     const { ProductService } = require('../services/products');
@@ -34,11 +22,20 @@ deletePhoto = (id, success, error, del, serviceType) => {
     Service.get(id, (result) => {
       if (result.photo_url) {
         const photoKey = result.photo_url.substr(result.photo_url.lastIndexOf('/') + 1);
-        s3.deleteObject({Key: photoKey}, (err, data) => {
-          if (err) {
+        storage
+          .bucket(process.env.GCS_BUCKET)
+          .file(photoKey)
+          .delete()
+        .then(() => {
+          success(`${photoKey} deleted.`);
+        })
+        .catch(err => {
+          if (err.message.includes("No such object")) {
+            success('Photo didn\'t exist.');
+          }
+          else {
             error(err);
           }
-          success(result);
         });
       }
       else {
@@ -56,9 +53,9 @@ deletePhoto = (id, success, error, del, serviceType) => {
 }
 
 sendEmail = (items, client, callback) => {
-  var itemsList = '';
-  var total = 0;
-  var date = new Date();
+  /*let itemsList = '';
+  let total = 0;
+  let date = new Date();
   date = `${date.getDate()}/${date.getMonth()}`;
 
   items.forEach((item) => {
@@ -75,7 +72,7 @@ sendEmail = (items, client, callback) => {
     total += (item.quantity * item.product.price);
   });
 
-  var body = `
+  let body = `
   <h3>
 	  Olá ${client.name}!
   </h3>
@@ -93,7 +90,7 @@ sendEmail = (items, client, callback) => {
   <b>Obrigado!</b>
   `
 
-  var params = {
+  let params = {
     Destination: {
       CcAddresses: [],
       ToAddresses: [client.email]
@@ -135,7 +132,8 @@ sendEmail = (items, client, callback) => {
       console.log(`MessageId: ${data.MessageId}`);
       return callback(null, data.MessageId);
     }
-  });
+  });*/
+  return; //remove this when uncommenting this function
 }
 
 module.exports = { uploadPhoto, deletePhoto, sendEmail }

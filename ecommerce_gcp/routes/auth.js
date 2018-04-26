@@ -47,7 +47,7 @@ router.get('/user/edit', function(req, res, next) {
 
 /* POST create user */
 router.post('/user/create', uploadPhoto.single('photo'), function(req, res, next) {
-  const file = req.file ? req.file.location : '';
+  const file = req.file ? req.file.path : '';
   UserService.create(req.body, file, (user) => {
     Log.save(req.session.user.login, 'INSERT', 'USER', req.body.login);
     res.redirect('/user/login');
@@ -61,7 +61,7 @@ router.post('/user/update', uploadPhoto.single('photo'), function(req, res, next
   if(!req.session.user) {
     res.redirect('/user/login');
   }
-  const file = req.file ? req.file.location : '';
+  const file = req.file ? req.file.path : '';
   UserService.update(req.session.user.id, req.body, file, (user) => {
     if (req.session.user.id == user.id) {
       req.session.user = user;
