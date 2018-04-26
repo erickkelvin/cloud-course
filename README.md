@@ -35,6 +35,7 @@ Repository containing projects for the cloud course at UFC, using Amazon Web Ser
     
 2. Open `http://localhost:3000` in your browser.
 
+<br/>
 
 ## GCP Project
 
