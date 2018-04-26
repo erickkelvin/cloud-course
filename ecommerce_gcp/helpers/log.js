@@ -1,42 +1,65 @@
-var AWS = require('aws-sdk');
-AWS.config.update({ region: process.env.AWS_DEFAULT_REGION });
-
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+var Datastore = require('@google-cloud/datastore');
+const datastore = new Datastore();
 
 function Log(){}
 Log.save = function(login, action, object, objectId = null) {
-    var params = {
-        TableName: 'Log',
-        Item: {
-            user: login,
-            action: action,
-            object: String(object),
-            date: formatDate(new Date())
+    const key = datastore.key('Log');
+
+    var data = [
+        {
+            name: 'user',
+            value: login
+        },
+        {
+            name: 'action',
+            value: action
+        },
+        {
+            name: 'object',
+            value: String(object)
+        },
+        {
+            name: 'date',
+            value: formatDate(new Date())
         }
-    }
-    if(objectId) {
-        params.Item['objectId'] = objectId;
+    ]
+    if (objectId) {
+        data.push({
+            name: 'objectId',
+            value: objectId
+        })
     }
 
-    return dynamodb.put(params, (err, data) => {
-        if(err) { console.log(err); }
-        else {
+    var entity = {
+        key: key,
+        data: data
+    };
+
+    datastore
+        .save(entity)
+        .then(() => {
             if (objectId) {
                 console.log(`${login} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
             } else {
                 console.log(`${login} - ${action} - ${object} - ${formatDate(new Date())}`);
             }
-        }
-    });
+        })
+        .catch(err => {
+            console.error('ERROR:', err);
+        });
 }
 
 Log.getAll = function(success, error) {
 
-    var params = { TableName: 'Log' };
-    dynamodb.scan(params, (err, data) => {
-        if(err) { console.log(err); error(err); }
-        else { success(data.Items); }
-    })
+    const query = datastore.createQuery('Log');
+    datastore.runQuery(query)
+        .then((results) => {
+            success(results[0]);
+        })
+        .catch((err) => {
+            console.error('ERROR:', err);
+            error(err);
+        });
 }
 
 function formatDate(date) {
