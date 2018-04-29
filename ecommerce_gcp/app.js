@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var MemcachedStore = require('connect-memjs')(session);
 var { checkAdmin } = require('./services/auth');
 
 var index = require('./routes/index');
@@ -28,11 +29,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
+
+const sessionConfig = {
   secret: 'very secret',
-  resave: true,
-  saveUninitialized: false
-}));
+  resave: false,
+  saveUninitialized: false,
+  signed: true
+}
+
+if (process.env.NODE_ENV === 'production' && process.env.MEMCACHE_URL) {
+  sessionConfig.store = new MemcachedStore({
+    servers: [process.env.MEMCACHE_URL]
+  });
+  sessionConfig.key = "session";
+  sessionConfig.proxy = true;
+}
+
+app.use(session(sessionConfig));
 
 // Routes
 app.all("/admin", checkAdmin);

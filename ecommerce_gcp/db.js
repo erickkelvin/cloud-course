@@ -9,6 +9,9 @@ var db = new Sequelize(
     logging: console.log,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    dialectOptions: process.env.NODE_ENV === 'production' && process.env.DB_INSTANCE_CONNECTION_NAME ? {
+      socketPath: `/cloudsql/${process.env.DB_INSTANCE_CONNECTION_NAME}`
+    } : {},
     operatorsAliases: Sequelize.Op
   }
 );
