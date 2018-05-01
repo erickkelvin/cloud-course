@@ -52,6 +52,9 @@ Repository containing projects for the cloud course at UFC, using Amazon Web Ser
    * GCS_KEYFILE
    * GCS_BUCKET
    * GCLOUD_PROJECT
+   * MJ_APIKEY_PUBLIC
+   * MJ_APIKEY_PRIVATE
+   * MJ_SENDER
 
 2. Clone the repository and then run in the terminal:  
     ```bash

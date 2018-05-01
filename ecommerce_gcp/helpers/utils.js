@@ -2,6 +2,10 @@ const Storage = require('@google-cloud/storage');
 const multer = require('multer');
 const multerGoogleStorage = require('multer-google-storage');
 const path = require('path');
+const Mailjet = require('node-mailjet').connect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE
+);
 
 const uploadPhoto = multer({
   storage: multerGoogleStorage.storageEngine()
@@ -53,9 +57,9 @@ deletePhoto = (id, success, error, del, serviceType) => {
 }
 
 sendEmail = (items, client, callback) => {
-  /*let itemsList = '';
-  let total = 0;
-  let date = new Date();
+  var itemsList = '';
+  var total = 0;
+  var date = new Date();
   date = `${date.getDate()}/${date.getMonth()}`;
 
   items.forEach((item) => {
@@ -72,7 +76,7 @@ sendEmail = (items, client, callback) => {
     total += (item.quantity * item.product.price);
   });
 
-  let body = `
+  var body = `
   <h3>
 	  Olá ${client.name}!
   </h3>
@@ -90,50 +94,25 @@ sendEmail = (items, client, callback) => {
   <b>Obrigado!</b>
   `
 
-  let params = {
-    Destination: {
-      CcAddresses: [],
-      ToAddresses: [client.email]
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: body
-        }
-      },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: 'Nova compra no SmartVendas'
-      }
-    },
-    Source: process.env.SES_EMAIL,
+  var options = {
+    FromEmail: process.env.MJ_SENDER,
+    FromName: 'SmartVendas',
+    Subject: 'Nova compra no SmartVendas',
+    'Html-part': body,
+    Recipients: [{ Email: client.email }]
   };
 
   console.log(`Sending email to ${client.email}`);
-  ses.sendEmail(params, (err, data) => {
-    if(err) {
-      console.log('Error sending the email');
-      if (err.message.includes('Email address is not verified.')) {
-        ses.verifyEmailAddress({ EmailAddress: client.email }, function (err, data) {
-          if (err) {
-            return callback(err, null);
-          }
-          else {
-            console.log('Verification e-mail sent!');
-            return callback(err, 'Needs verification.');
-          }
-        });
-      }
-      else {
-        return callback(err, null);
-      }
-    } else {
-      console.log(`MessageId: ${data.MessageId}`);
-      return callback(null, data.MessageId);
-    }
-  });*/
-  return; //remove this when uncommenting this function
+
+  Mailjet.post('send').request(options)
+    .then(function (result) {
+      console.log('Email OK')
+      callback(null, result.response.statusCode);
+    })
+    .catch(function (err) {
+      console.log('Error sending the email', err);
+      callback(err, null);
+    });
 }
 
 module.exports = { uploadPhoto, deletePhoto, sendEmail }

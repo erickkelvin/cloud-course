@@ -81,15 +81,9 @@ router.get('/', (req, res, next) => {
 router.post('/checkout', (req, res, next) => {
   if (req.session.user) {
     CartService.checkout(req.session.cart, req.session.user, (result) => {
-      if (result.includes('verification')) {
-        req.session.error = 'Verificação necessária! Um email de verificação do Amazon SES foi enviado. Após confirmação, finalizar compra novamente.';
-        res.redirect('/cart');
-      }
-      else {
-        console.log('checkout complete');
-        req.session.cart = null;
-        res.render('./checkout', { title:'Compra realizada com sucesso!', session: req.session });
-      }
+      console.log('checkout complete');
+      req.session.cart = null;
+      res.render('./checkout', { title:'Compra realizada com sucesso!', session: req.session });
     }, (err) => {
       console.log('error on checkout');
       res.redirect('/cart');
