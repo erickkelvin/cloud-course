@@ -73,9 +73,7 @@ router.get('/delete/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  const error = req.session.error || '';
-  delete req.session.error;
-  res.render('./cart', { title:'Carrinho', message: error, session: req.session });
+  res.render('./cart', { title:'Carrinho', session: req.session });
 });
 
 router.post('/checkout', (req, res, next) => {

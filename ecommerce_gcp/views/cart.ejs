@@ -1,11 +1,6 @@
 <% include header %>
   <div class='content' id='cart'>
     <h1><%= title %></h1>
-    <% if (message) { %>
-      <div class='cart-message'>
-        <i class="fa fa-exclamation-circle"></i> <%= message %>
-      </div>
-    <% } %>
     <% if (session.cart && session.cart.length) { %>
       <table class='crud-table products-table'>
         <tr>
