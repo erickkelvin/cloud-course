@@ -7,10 +7,6 @@ Log.save = function(login, action, object, objectId = null) {
 
     var data = [
         {
-            name: 'user',
-            value: login
-        },
-        {
             name: 'action',
             value: action
         },
@@ -23,11 +19,17 @@ Log.save = function(login, action, object, objectId = null) {
             value: formatDate(new Date())
         }
     ]
+    if (login) {
+        data.push({
+            name: 'user',
+            value: login
+        });
+    }
     if (objectId) {
         data.push({
             name: 'objectId',
             value: objectId
-        })
+        });
     }
 
     var entity = {

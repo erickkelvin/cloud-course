@@ -6,7 +6,7 @@
     </h1>
     <div class='logs-box'>
       <% logs.forEach(function(log){ %>
-        <div><%= `${log.user} ${log.action} ${log.object} ${log.objectId || ''} ${log.date}` %></div>
+        <div><%= `${log.user || '' } ${log.action} ${log.object} ${log.objectId || ''} ${log.date}` %></div>
       <% }); %>
     </div>
 <% include ../footer %>
