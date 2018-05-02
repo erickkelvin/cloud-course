@@ -49,7 +49,7 @@ router.get('/user/edit', function(req, res, next) {
 router.post('/user/create', uploadPhoto.single('photo'), function(req, res, next) {
   const file = req.file ? req.file.path : '';
   UserService.create(req.body, file, (user) => {
-    Log.save(req.session.user.login, 'INSERT', 'USER', req.body.login);
+    Log.save('', 'INSERT', 'USER', req.body.login);
     res.redirect('/user/login');
   }, (err) => {
     console.log('error on create');
