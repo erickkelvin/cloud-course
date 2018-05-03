@@ -4,6 +4,7 @@ const datastore = new Datastore();
 function Log(){}
 Log.save = function(login, action, object, objectId = null) {
     const key = datastore.key('Log');
+    const datetime = formatDate(new Date());
 
     var data = [
         {
@@ -20,7 +21,7 @@ Log.save = function(login, action, object, objectId = null) {
         },
         {
             name: 'date',
-            value: formatDate(new Date())
+            value: datetime
         }
     ]
     if (objectId) {
@@ -39,9 +40,9 @@ Log.save = function(login, action, object, objectId = null) {
         .save(entity)
         .then(() => {
             if (objectId) {
-                console.log(`${login} - ${action} - ${object} - ${objectId} - ${formatDate(new Date())}`);
+                console.log(`${login} - ${action} - ${object} - ${objectId} - ${datetime}`);
             } else {
-                console.log(`${login} - ${action} - ${object} - ${formatDate(new Date())}`);
+                console.log(`${login} - ${action} - ${object} - ${datetime}`);
             }
         })
         .catch(err => {
@@ -64,13 +65,13 @@ Log.getAll = function(success, error) {
 
 function formatDate(date) {
   
-  var day = date.getDate();
-  var month = date.getMonth();
-  var year = date.getFullYear();
-  var hour = date.getHours();
-  var minute = date.getMinutes();
-  var seconds = date.getSeconds();
-  var milli = date.getMilliseconds();
+  var day = date.getUTCDate();
+  var month = date.getUTCMonth();
+  var year = date.getUTCFullYear();
+  var hour = date.getUTCHours();
+  var minute = date.getUTCMinutes();
+  var seconds = date.getUTCSeconds();
+  var milli = date.getUTCMilliseconds();
 
   if(day < 10) {
       day = '0' + day;
