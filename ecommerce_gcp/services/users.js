@@ -50,7 +50,7 @@ UserService.create = (user, photo_url, success, error) => {
     success(`\n${user.name} has been created!`);
   }).catch(err => {
     if (err.errors && err.errors[0].message.toLowerCase().includes("unique")) {
-      error({ message: 'This login is already in use' });
+      error({ message: 'This login is already in use', err: err });
     } else {
       error(err); //error on create
     }
