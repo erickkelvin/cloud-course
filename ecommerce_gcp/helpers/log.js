@@ -54,7 +54,9 @@ Log.save = function(login, action, object, objectId = null) {
 
 Log.getAll = function(success, error) {
 
-    const query = datastore.createQuery('Log');
+    const query = datastore.createQuery('Log').order('date', {
+        descending: true,
+    });
     datastore.runQuery(query)
         .then((results) => {
             success(results[0]);
